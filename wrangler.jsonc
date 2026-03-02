@@ -17,6 +17,9 @@
 	},
 	"observability": {
 		"enabled": true
+	},
+	"vars": {
+		"PUBLIC_API_URL": "https://dbportfolios-backend.blr-bull.workers.dev"
 	}
 	/**
 	 * Smart Placement
