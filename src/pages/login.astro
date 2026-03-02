@@ -1,0 +1,761 @@
+---
+import Layout from "../layouts/Layout.astro";
+import MarketTicker from "../components/MarketTicker.astro";
+import BrandLogo from "../components/BrandLogo.astro";
+
+const mode = Astro.url.searchParams.get("mode") || "login";
+const isSignup = mode === "signup";
+
+const title = isSignup ? "Create Account" : "Sign In";
+const buttonText = isSignup ? "Create Account" : "Sign In";
+
+const API_BASE_URL = import.meta.env.PUBLIC_API_URL || "http://localhost:8787";
+---
+
+<Layout title={`${title} | DB Portfolios`}>
+    <MarketTicker />
+    <main class="login-container">
+        <div class="background-elements" aria-hidden="true">
+            <div class="glow glow-1"></div>
+            <div class="glow glow-2"></div>
+            <div class="glow glow-3"></div>
+            <div class="glow glow-4"></div>
+            <svg
+                class="chart-line"
+                viewBox="0 0 1000 400"
+                preserveAspectRatio="none"
+                role="img"
+                aria-label="Abstract stock chart background"
+            >
+                <path
+                    d="M0,350 Q150,300 300,320 T600,100 T900,150 T1000,50"
+                    fill="none"
+                    stroke="rgba(16, 185, 129, 0.1)"
+                    stroke-width="2"></path>
+                <path
+                    d="M0,380 Q200,350 400,360 T700,250 T1000,300"
+                    fill="none"
+                    stroke="rgba(239, 68, 68, 0.05)"
+                    stroke-width="2"></path>
+            </svg>
+        </div>
+
+        <article class="login-card">
+            <header class="brand">
+                <BrandLogo width="200" height="36" className="login-logo" />
+                <h1>{title}</h1>
+            </header>
+
+            <div class="mode-tabs">
+                <a
+                    href="/login?mode=login"
+                    class={`tab-item ${!isSignup ? "active" : ""}`}
+                    role="tab"
+                    aria-selected={!isSignup}
+                >
+                    Sign In
+                </a>
+                <a
+                    href="/login?mode=signup"
+                    class={`tab-item ${isSignup ? "active" : ""}`}
+                    role="tab"
+                    aria-selected={isSignup}
+                >
+                    Create Account
+                </a>
+            </div>
+
+            <form
+                class="login-form"
+                id="auth-form"
+                data-api-url={API_BASE_URL}
+                data-mode={mode}
+            >
+                {
+                    isSignup && (
+                        <div class="input-group">
+                            <label for="name">Full Name</label>
+                            <input
+                                type="text"
+                                id="name"
+                                name="name"
+                                placeholder="John Doe"
+                                autocomplete="name"
+                                required
+                            />
+                        </div>
+                    )
+                }
+
+                <div class="input-group">
+                    <label for="email">Email Address</label>
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="name@company.com"
+                        autocomplete="username"
+                        required
+                    />
+                </div>
+
+                <div class="input-group">
+                    <div class="label-row">
+                        <label for="password">Password</label>
+                        {
+                            !isSignup && (
+                                <a href="/forgot-password" class="forgot-link">
+                                    Forgot password?
+                                </a>
+                            )
+                        }
+                    </div>
+                    <div class="password-wrapper">
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="••••••••"
+                            autocomplete={isSignup
+                                ? "new-password"
+                                : "current-password"}
+                            required
+                        />
+                        <button
+                            type="button"
+                            id="toggle-password"
+                            class="toggle-password"
+                            aria-label="Toggle password visibility"
+                        >
+                            <svg
+                                id="eye-icon"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                width="18"
+                                height="18"
+                            >
+                                <path
+                                    d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"
+                                ></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                            <svg
+                                id="eye-off-icon"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                width="18"
+                                height="18"
+                                style="display:none;"
+                            >
+                                <path
+                                    d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"
+                                ></path>
+                                <line x1="1" y1="1" x2="23" y2="23"></line>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <div
+                    id="error-message"
+                    class="error-text"
+                    style="display: none;"
+                >
+                </div>
+
+                <button type="submit" class="submit-btn" id="login-submit">
+                    <span id="btn-text">{buttonText}</span>
+                    <svg
+                        id="btn-icon"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        aria-hidden="true"
+                    >
+                        <path d="M5 12h14M12 5l7 7-7 7"></path>
+                    </svg>
+                    <div id="btn-loader" class="loader" style="display: none;">
+                    </div>
+                </button>
+            </form>
+
+            <div class="divider" role="separator">
+                <span>or continue with</span>
+            </div>
+
+            <div class="social-logins">
+                <button class="social-btn" aria-label="Sign in with Google">
+                    <img
+                        src="https://www.svgrepo.com/show/475656/google-color.svg"
+                        alt=""
+                        aria-hidden="true"
+                        width="18"
+                        height="18"
+                        loading="lazy"
+                    />
+                    <span>Continue with Google</span>
+                </button>
+            </div>
+
+            <footer class="signup-prompt">
+                <p>
+                    {
+                        isSignup ? (
+                            <>
+                                Already have an account?{" "}
+                                <a href="/login?mode=login">Sign In</a>
+                            </>
+                        ) : (
+                            <>
+                                Don't have an account?{" "}
+                                <a href="/login?mode=signup">Create one</a>
+                            </>
+                        )
+                    }
+                </p>
+            </footer>
+        </article>
+    </main>
+
+    <script>
+        const form = document.getElementById("auth-form") as HTMLFormElement;
+        const errorDiv = document.getElementById("error-message");
+        const submitBtn = document.getElementById(
+            "login-submit",
+        ) as HTMLButtonElement;
+        const btnText = document.getElementById("btn-text");
+        const btnIcon = document.getElementById("btn-icon");
+        const btnLoader = document.getElementById("btn-loader");
+
+        if (form) {
+            form.addEventListener("submit", async (e) => {
+                e.preventDefault();
+
+                const formData = new FormData(form);
+                const data = Object.fromEntries(formData.entries());
+                const apiBaseUrl = form.dataset.apiUrl;
+                const mode = form.dataset.mode;
+                const endpoint =
+                    mode === "signup" ? "/api/auth/signup" : "/api/auth/login";
+
+                // Reset state
+                if (errorDiv) {
+                    errorDiv.style.display = "none";
+                    errorDiv.textContent = "";
+                }
+
+                setLoading(true);
+
+                try {
+                    const response = await fetch(`${apiBaseUrl}${endpoint}`, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify(data),
+                    });
+
+                    const result = (await response.json()) as any;
+
+                    if (!response.ok) {
+                        let msg = result.message || "Authentication failed";
+                        if (response.status === 401 && mode === "login") {
+                            msg +=
+                                ". If you don't have an account, please Sign Up first.";
+                        }
+                        throw new Error(msg);
+                    }
+
+                    if (result.token) {
+                        localStorage.setItem("auth_token", result.token);
+                        window.location.href = "/dashboard";
+                    } else if (result.success && mode === "signup") {
+                        window.location.href =
+                            "/login?mode=login&signup_success=true";
+                    }
+                } catch (err: any) {
+                    if (errorDiv) {
+                        errorDiv.style.display = "block";
+                        errorDiv.textContent = err.message;
+                    }
+                } finally {
+                    setLoading(false);
+                }
+            });
+        }
+
+        function setLoading(isLoading: boolean) {
+            if (submitBtn) submitBtn.disabled = isLoading;
+            if (btnText) btnText.style.opacity = isLoading ? "0" : "1";
+            if (btnIcon) btnIcon.style.opacity = isLoading ? "0" : "1";
+            if (btnLoader)
+                btnLoader.style.display = isLoading ? "block" : "none";
+        }
+
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get("signup_success") === "true" && errorDiv) {
+            errorDiv.style.display = "block";
+            errorDiv.style.color = "#10b981";
+            errorDiv.textContent =
+                "Account created successfully! Please sign in.";
+        }
+
+        // Password visibility toggle
+        const toggleBtn = document.getElementById("toggle-password");
+        const passwordInput = document.getElementById(
+            "password",
+        ) as HTMLInputElement;
+        const eyeIcon = document.getElementById("eye-icon");
+        const eyeOffIcon = document.getElementById("eye-off-icon");
+
+        toggleBtn?.addEventListener("click", () => {
+            const isPassword = passwordInput.type === "password";
+            passwordInput.type = isPassword ? "text" : "password";
+            if (eyeIcon) eyeIcon.style.display = isPassword ? "none" : "block";
+            if (eyeOffIcon)
+                eyeOffIcon.style.display = isPassword ? "block" : "none";
+        });
+    </script>
+</Layout>
+
+<style>
+    .login-container {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--text-primary);
+        position: relative;
+        overflow: hidden;
+        padding: 1.5rem;
+    }
+
+    /* Background Elements */
+    .background-elements {
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+    }
+
+    .glow {
+        position: absolute;
+        width: 45vw;
+        height: 45vw;
+        border-radius: 50%;
+        filter: blur(120px);
+        z-index: 0;
+        opacity: 0.12;
+        mix-blend-mode: screen;
+        animation: float 20s infinite alternate ease-in-out;
+    }
+
+    .glow-1 {
+        background: var(--accent-green);
+        top: -15%;
+        right: -10%;
+        animation-delay: 0s;
+    }
+
+    .glow-2 {
+        background: #3b82f6;
+        bottom: -15%;
+        left: -10%;
+        opacity: 0.08;
+        animation-delay: -5s;
+        animation-duration: 25s;
+    }
+
+    .glow-3 {
+        background: #8b5cf6;
+        top: 40%;
+        left: -5%;
+        width: 30vw;
+        height: 30vw;
+        opacity: 0.05;
+        animation-delay: -10s;
+        animation-duration: 30s;
+    }
+
+    .glow-4 {
+        background: var(--accent-green);
+        bottom: 20%;
+        right: 5%;
+        width: 25vw;
+        height: 25vw;
+        opacity: 0.04;
+        animation-delay: -15s;
+        animation-duration: 22s;
+    }
+
+    @keyframes float {
+        0% {
+            transform: translate(0, 0) scale(1);
+        }
+        33% {
+            transform: translate(10%, 15%) scale(1.1);
+        }
+        66% {
+            transform: translate(-5%, 10%) scale(0.9);
+        }
+        100% {
+            transform: translate(0, 0) scale(1);
+        }
+    }
+
+    .chart-line {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 40%;
+        opacity: 0.2;
+    }
+
+    /* Login Card */
+    .login-card {
+        width: 100%;
+        max-width: 440px;
+        background: var(--card-bg);
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
+        border: 1px solid var(--border-color);
+        border-radius: 24px;
+        padding: 2.5rem;
+        position: relative;
+        z-index: 10;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        animation: cardFadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes cardFadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .brand {
+        text-align: center;
+        margin-bottom: 2.5rem;
+    }
+
+    .logo-icon {
+        width: 56px;
+        height: 56px;
+        background: var(--accent-green-glow);
+        color: var(--accent-green);
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1.25rem;
+    }
+
+    .logo-icon svg {
+        width: 32px;
+        height: 32px;
+    }
+
+    h1 {
+        font-size: 2rem;
+        font-weight: 800;
+        margin: 0;
+        letter-spacing: -0.04em;
+    }
+
+    /* Mode Tabs */
+    .mode-tabs {
+        display: flex;
+        background: rgba(255, 255, 255, 0.03);
+        padding: 0.25rem;
+        border-radius: 12px;
+        margin-bottom: 2rem;
+        border: 1px solid var(--border-color);
+    }
+
+    .tab-item {
+        flex: 1;
+        text-align: center;
+        padding: 0.625rem;
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: var(--text-secondary);
+        text-decoration: none;
+        border-radius: 10px;
+        transition: all var(--transition-fast);
+    }
+
+    .tab-item:hover {
+        color: var(--text-primary);
+    }
+
+    .tab-item.active {
+        background: var(--accent-green);
+        color: #0d1117;
+        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+    }
+
+    /* Form Styles */
+    .login-form {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .input-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.625rem;
+    }
+
+    .label-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    label {
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: var(--text-secondary);
+    }
+
+    .forgot-link {
+        font-size: 0.875rem;
+        color: var(--accent-green);
+        text-decoration: none;
+        font-weight: 500;
+        transition: color var(--transition-fast);
+    }
+
+    .forgot-link:hover {
+        color: var(--accent-green-dark);
+        text-decoration: underline;
+    }
+
+    input {
+        background: var(--input-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 14px;
+        padding: 0.875rem 1.125rem;
+        color: var(--text-primary);
+        font-size: 1rem;
+        transition: all var(--transition-fast);
+        width: 100%;
+    }
+
+    .password-wrapper {
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+
+    .password-wrapper input {
+        padding-right: 3rem;
+    }
+
+    .toggle-password {
+        position: absolute;
+        right: 0.75rem;
+        background: none;
+        border: none;
+        color: var(--text-secondary);
+        cursor: pointer;
+        padding: 0.25rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: color var(--transition-fast);
+    }
+
+    .toggle-password:hover {
+        color: var(--text-primary);
+    }
+
+    input::placeholder {
+        color: rgba(255, 255, 255, 0.2);
+    }
+
+    input:focus {
+        outline: none;
+        border-color: var(--accent-green);
+        background: rgba(255, 255, 255, 0.05);
+        box-shadow: 0 0 0 4px var(--accent-green-glow);
+    }
+
+    .submit-btn {
+        position: relative;
+        background: var(--accent-green);
+        color: #0d1117;
+        border: none;
+        border-radius: 14px;
+        padding: 1rem;
+        font-size: 1rem;
+        font-weight: 700;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.75rem;
+        transition: all var(--transition-fast);
+        margin-top: 0.5rem;
+    }
+
+    .submit-btn:hover {
+        background: var(--accent-green-dark);
+        transform: translateY(-1px);
+    }
+
+    .submit-btn:active {
+        transform: translateY(0);
+    }
+
+    .submit-btn:focus-visible {
+        outline: 2px solid var(--text-primary);
+        outline-offset: 4px;
+    }
+
+    .submit-btn svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    /* Divider */
+    .divider {
+        display: flex;
+        align-items: center;
+        text-align: center;
+        margin: 1.75rem 0;
+        color: var(--text-secondary);
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        font-weight: 700;
+    }
+
+    .divider::before,
+    .divider::after {
+        content: "";
+        flex: 1;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .divider::before {
+        margin-right: 1.25rem;
+    }
+    .divider::after {
+        margin-left: 1.25rem;
+    }
+
+    /* Social Buttons */
+    .social-logins {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 2rem;
+    }
+
+    .social-btn {
+        background: var(--input-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 14px;
+        padding: 0.75rem 1.5rem;
+        width: 100%;
+        max-width: 280px;
+        color: var(--text-primary);
+        font-size: 0.9375rem;
+        font-weight: 600;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.75rem;
+        transition: all var(--transition-fast);
+    }
+
+    .social-btn:hover {
+        background: rgba(255, 255, 255, 0.05);
+        border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .social-btn:focus-visible {
+        outline: 2px solid var(--accent-green);
+        outline-offset: 2px;
+    }
+
+    /* Error and Loader */
+    .error-text {
+        margin-top: 1rem;
+        padding: 0.75rem;
+        background: rgba(239, 68, 68, 0.1);
+        border: 1px solid rgba(239, 68, 68, 0.2);
+        border-radius: 12px;
+        color: #ef4444;
+        font-size: 0.875rem;
+        text-align: center;
+        font-weight: 500;
+        animation: cardFadeIn 0.3s ease-out;
+    }
+
+    .loader {
+        width: 20px;
+        height: 20px;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        border-top-color: #fff;
+        animation: spin 0.8s linear infinite;
+        position: absolute;
+    }
+
+    @keyframes spin {
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
+    /* Footer */
+    .signup-prompt {
+        text-align: center;
+        color: var(--text-secondary);
+        font-size: 0.9375rem;
+        margin: 0;
+    }
+
+    .signup-prompt a {
+        color: var(--accent-green);
+        text-decoration: none;
+        font-weight: 600;
+        transition: color var(--transition-fast);
+    }
+
+    .signup-prompt a:hover {
+        color: var(--accent-green-dark);
+        text-decoration: underline;
+    }
+
+    @media (max-width: 480px) {
+        .login-card {
+            padding: 2rem 1.5rem;
+            border-radius: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .login-container {
+            padding: 0;
+        }
+    }
+</style>

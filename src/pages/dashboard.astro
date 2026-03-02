@@ -1,0 +1,399 @@
+---
+import Layout from "../layouts/Layout.astro";
+import MarketTicker from "../components/MarketTicker.astro";
+import BrandLogo from "../components/BrandLogo.astro";
+---
+
+<Layout title="Dashboard | DB Portfolios">
+    <div id="auth-checker" style="display: none;">
+        <MarketTicker />
+
+        <nav class="dashboard-nav">
+            <div class="nav-container">
+                <div class="logo">
+                    <BrandLogo width="150" height="26" />
+                </div>
+                <div class="nav-links">
+                    <a href="/dashboard" class="active">Overview</a>
+                    <a href="/assets">Assets</a>
+                    <a href="/analytics">Analytics</a>
+                </div>
+                <div class="user-menu">
+                    <span id="user-name">Loading...</span>
+                    <button id="logout-btn" class="logout-btn">Log Out</button>
+                </div>
+            </div>
+        </nav>
+
+        <main class="dashboard-content">
+            <header class="content-header">
+                <div>
+                    <h1>Portfolio Overview</h1>
+                    <p class="text-secondary">
+                        Track your wealth across all asset classes
+                    </p>
+                </div>
+                <div class="total-value">
+                    <span class="label">Total Net Worth</span>
+                    <span class="amount">&#8377;12,45,600</span>
+                    <span class="trend positive">↑ 12.4% vs last month</span>
+                </div>
+            </header>
+
+            <section class="chart-section glass-card">
+                <div class="card-header">
+                    <h2>Growth Over Time</h2>
+                    <div class="chart-filters">
+                        <button class="filter-btn active">1M</button>
+                        <button class="filter-btn">3M</button>
+                        <button class="filter-btn">1Y</button>
+                        <button class="filter-btn">All</button>
+                    </div>
+                </div>
+
+                <div class="chart-container">
+                    <!-- Custom SVG Chart -->
+                    <svg
+                        class="growth-chart"
+                        viewBox="0 0 800 300"
+                        preserveAspectRatio="none"
+                    >
+                        <defs>
+                            <linearGradient
+                                id="chartGradient"
+                                x1="0%"
+                                y1="0%"
+                                x2="0%"
+                                y2="100%"
+                            >
+                                <stop
+                                    offset="0%"
+                                    style="stop-color:var(--accent-green); stop-opacity:0.2"
+                                ></stop>
+                                <stop
+                                    offset="100%"
+                                    style="stop-color:var(--accent-green); stop-opacity:0"
+                                ></stop>
+                            </linearGradient>
+                        </defs>
+                        <!-- Area path -->
+                        <path
+                            d="M0,250 Q100,220 200,240 T400,120 T600,160 T800,40 V300 H0 Z"
+                            fill="url(#chartGradient)"></path>
+                        <!-- Line path -->
+                        <path
+                            d="M0,250 Q100,220 200,240 T400,120 T600,160 T800,40"
+                            fill="none"
+                            stroke="var(--accent-green)"
+                            stroke-width="3"
+                            stroke-linecap="round"></path>
+                        <!-- Data Points -->
+                        <circle
+                            cx="200"
+                            cy="240"
+                            r="4"
+                            fill="var(--accent-green)"></circle>
+                        <circle
+                            cx="400"
+                            cy="120"
+                            r="4"
+                            fill="var(--accent-green)"></circle>
+                        <circle
+                            cx="600"
+                            cy="160"
+                            r="4"
+                            fill="var(--accent-green)"></circle>
+                        <circle
+                            cx="800"
+                            cy="40"
+                            r="6"
+                            fill="#fff"
+                            stroke="var(--accent-green)"
+                            stroke-width="2"></circle>
+                    </svg>
+
+                    <div class="chart-axis-x">
+                        <span>Jan</span><span>Feb</span><span>Mar</span><span
+                            >Apr</span
+                        ><span>May</span><span>Jun</span>
+                    </div>
+                </div>
+            </section>
+
+            <section class="asset-grid">
+                <div class="stat-card glass-card">
+                    <span class="icon">📈</span>
+                    <h3>Stocks</h3>
+                    <p class="value">&#8377;8,42,000</p>
+                    <p class="change positive">+2.4% today</p>
+                </div>
+                <div class="stat-card glass-card">
+                    <span class="icon">🪙</span>
+                    <h3>Gold/Silver</h3>
+                    <p class="value">&#8377;2,85,000</p>
+                    <p class="change negative">-0.5% today</p>
+                </div>
+                <div class="stat-card glass-card">
+                    <span class="icon">₿</span>
+                    <h3>Crypto</h3>
+                    <p class="value">&#8377;1,18,600</p>
+                    <p class="change positive">+5.2% today</p>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        // Decode JWT payload (base64url → JSON)
+        function decodeJwtPayload(token: string) {
+            try {
+                const base64 = token
+                    .split(".")[1]
+                    .replace(/-/g, "+")
+                    .replace(/_/g, "/");
+                return JSON.parse(atob(base64));
+            } catch {
+                return null;
+            }
+        }
+
+        const token = localStorage.getItem("auth_token");
+        if (!token) {
+            window.location.href = "/login";
+        } else {
+            const authChecker = document.getElementById("auth-checker");
+            if (authChecker) authChecker.style.display = "block";
+
+            const userName = document.getElementById("user-name");
+            if (userName) {
+                const payload = decodeJwtPayload(token);
+                if (payload?.name) {
+                    userName.textContent = `Welcome, ${payload.name}!`;
+                } else if (payload?.email) {
+                    userName.textContent = `Welcome, ${payload.email}!`;
+                } else {
+                    userName.textContent = "Welcome back!";
+                }
+            }
+        }
+
+        // Logout
+        document.getElementById("logout-btn")?.addEventListener("click", () => {
+            localStorage.removeItem("auth_token");
+            window.location.href = "/login";
+        });
+    </script>
+</Layout>
+
+<style>
+    /* Nav */
+    .dashboard-nav {
+        padding: 0.4rem 2rem;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .nav-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .logo {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        font-weight: 800;
+        font-size: 1.25rem;
+    }
+
+    .logo svg {
+        width: 24px;
+        height: 24px;
+        color: var(--accent-green);
+    }
+
+    .nav-links {
+        display: flex;
+        gap: 2rem;
+    }
+    .nav-links a {
+        text-decoration: none;
+        color: var(--text-secondary);
+        font-weight: 500;
+        transition: color 0.2s;
+    }
+    .nav-links a.active {
+        color: var(--accent-green);
+        font-weight: 600;
+    }
+    .nav-links a:hover {
+        color: var(--text-primary);
+    }
+
+    .user-menu {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+    }
+    .logout-btn {
+        background: rgba(239, 68, 68, 0.1);
+        color: var(--accent-red);
+        border: 1px solid rgba(239, 68, 68, 0.2);
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.2s;
+    }
+    .logout-btn:hover {
+        background: var(--accent-red);
+        color: white;
+    }
+
+    /* Content Area */
+    .dashboard-content {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 3rem 2rem;
+    }
+
+    .content-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        margin-bottom: 3rem;
+    }
+
+    h1 {
+        font-size: 2.25rem;
+        font-weight: 800;
+        margin: 0;
+        letter-spacing: -0.02em;
+    }
+    .text-secondary {
+        color: var(--text-secondary);
+        margin-top: 0.5rem;
+    }
+
+    .total-value {
+        text-align: right;
+    }
+    .total-value .label {
+        display: block;
+        color: var(--text-secondary);
+        font-size: 0.875rem;
+        font-weight: 600;
+    }
+    .total-value .amount {
+        display: block;
+        font-size: 2.5rem;
+        font-weight: 900;
+        margin: 0.25rem 0;
+    }
+    .trend.positive {
+        color: var(--accent-green);
+        font-size: 0.875rem;
+        font-weight: 600;
+    }
+
+    /* Chart Section */
+    .chart-section {
+        padding: 2rem;
+        margin-bottom: 2rem;
+    }
+    .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+    }
+    h2 {
+        font-size: 1.25rem;
+        font-weight: 700;
+        margin: 0;
+    }
+
+    .chart-filters {
+        display: flex;
+        gap: 0.5rem;
+    }
+    .filter-btn {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid var(--border-color);
+        color: var(--text-secondary);
+        padding: 0.4rem 0.8rem;
+        border-radius: 6px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        cursor: pointer;
+    }
+    .filter-btn.active {
+        background: var(--accent-green);
+        color: #000;
+        border-color: var(--accent-green);
+    }
+
+    .chart-container {
+        height: 350px;
+        display: flex;
+        flex-direction: column;
+    }
+    .growth-chart {
+        flex-grow: 1;
+        width: 100%;
+        margin: 1rem 0;
+        overflow: visible;
+    }
+    .chart-axis-x {
+        display: flex;
+        justify-content: space-between;
+        padding: 0 10px;
+        color: var(--text-secondary);
+        font-size: 0.75rem;
+        font-weight: 600;
+    }
+
+    /* Asset Grid */
+    .asset-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.5rem;
+    }
+
+    .stat-card {
+        padding: 2rem;
+        transition: transform 0.2s;
+        cursor: pointer;
+    }
+    .stat-card:hover {
+        transform: translateY(-5px);
+        border-color: var(--accent-green);
+    }
+    .stat-card .icon {
+        font-size: 1.75rem;
+        display: block;
+        margin-bottom: 1rem;
+    }
+    .stat-card h3 {
+        font-size: 1rem;
+        color: var(--text-secondary);
+        margin: 0;
+    }
+    .stat-card .value {
+        font-size: 1.75rem;
+        font-weight: 800;
+        margin: 0.5rem 0;
+    }
+    .stat-card .change.positive {
+        color: var(--accent-green);
+        font-size: 0.875rem;
+        font-weight: 600;
+    }
+    .stat-card .change.negative {
+        color: var(--accent-red);
+        font-size: 0.875rem;
+        font-weight: 600;
+    }
+</style>
