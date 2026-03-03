@@ -69,22 +69,52 @@ import BrandLogo from "../components/BrandLogo.astro";
         </section>
 
         <section id="features" class="features">
+            <h2 class="features-title">Why DB Portfolios?</h2>
             <div class="feature-grid">
                 <div class="feature-card">
-                    <div class="feature-icon">📊</div>
-                    <h3>Real-time Tracking</h3>
-                    <p>Live data feeds for global markets and crypto assets.</p>
+                    <div class="feature-icon">🎓</div>
+                    <h3>Learn Before You Invest</h3>
+                    <p>
+                        Investing without training can be as harmful as driving
+                        without learning. Master the stock market without losing
+                        real money.
+                    </p>
                 </div>
                 <div class="feature-card">
-                    <div class="feature-icon">🛡️</div>
-                    <h3>Bank-Grade Security</h3>
-                    <p>Stateless authentication and encrypted data storage.</p>
+                    <div class="feature-icon">💡</div>
+                    <h3>
+                        L<span class="text-gradient">"earn"</span>ing is Earning
+                    </h3>
+                    <p>
+                        More than 90% of first-time investors lose money in
+                        Equities and Mutual Funds. Don't be part of that
+                        statistic.
+                    </p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3>Benchmark Your Returns</h3>
+                    <p>
+                        Compare your portfolio performance against Sensex and
+                        Nifty to know if you're truly beating the market.
+                    </p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">🚀</div>
-                    <h3>Advanced Analytics</h3>
+                    <h3>Sharpen Your Skills</h3>
                     <p>
-                        Deep insights into your portfolio performance and risk.
+                        Already investing in Equities & Mutual Funds? Refine
+                        your strategy and improve your returns with data-driven
+                        insights.
+                    </p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📋</div>
+                    <h3>Track Everything</h3>
+                    <p>
+                        Create stock watchlists, personal portfolios, and track
+                        upcoming Dividends, Bonus, Stock Splits and more — all
+                        in one place.
                     </p>
                 </div>
             </div>
@@ -456,10 +486,38 @@ import BrandLogo from "../components/BrandLogo.astro";
         z-index: 10;
     }
 
+    .features-title {
+        text-align: center;
+        font-size: 2.5rem;
+        margin-bottom: 3rem;
+        background: linear-gradient(135deg, #ffffff, #10b981);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
     .feature-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        grid-template-columns: repeat(3, 1fr);
         gap: 2rem;
+        justify-items: center;
+    }
+
+    /* Center the last row (2 cards) */
+    .feature-grid .feature-card:nth-child(4),
+    .feature-grid .feature-card:nth-child(5) {
+        grid-column: span 1;
+    }
+
+    @media (max-width: 900px) {
+        .feature-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+    @media (max-width: 600px) {
+        .feature-grid {
+            grid-template-columns: 1fr;
+        }
     }
 
     .feature-card {
