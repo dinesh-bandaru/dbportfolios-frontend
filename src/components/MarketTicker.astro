@@ -1,78 +1,74 @@
 <div class="market-ticker" aria-label="Market Data Ticker">
-    <div class="ticker-wrapper">
-        <div class="ticker-content">
-            <!-- Ticker items will be repeated for infinite scroll -->
-            <div class="ticker-item">
-                <span>SENSEX</span>
-                <span class="price">72,488.99</span>
-                <span class="change positive">+0.42%</span>
-            </div>
-            <div class="ticker-item">
-                <span>NIFTY 50</span>
-                <span class="price">22,212.70</span>
-                <span class="change positive">+0.38%</span>
-            </div>
-            <div class="ticker-item">
-                <span>GOLD</span>
-                <span class="price">&#8377;62,450</span>
-                <span class="change negative">-0.12%</span>
-            </div>
-            <div class="ticker-item">
-                <span>SILVER</span>
-                <span class="price">&#8377;71,200</span>
-                <span class="change positive">+0.85%</span>
-            </div>
-            <div class="ticker-item">
-                <span>BTC/USD</span>
-                <span class="price">$62,142</span>
-                <span class="change positive">+1.24%</span>
-            </div>
-            <div class="ticker-item">
-                <span>ETH/USD</span>
-                <span class="price">$3,421</span>
-                <span class="change positive">+0.92%</span>
-            </div>
-        </div>
-        <div class="ticker-content" aria-hidden="true">
-            <div class="ticker-item">
-                <span>SENSEX</span>
-                <span class="price">72,488.99</span>
-                <span class="change positive">+0.42%</span>
-            </div>
-            <div class="ticker-item">
-                <span>NIFTY 50</span>
-                <span class="price">22,212.70</span>
-                <span class="change positive">+0.38%</span>
-            </div>
-            <div class="ticker-item">
-                <span>GOLD</span>
-                <span class="price">&#8377;62,450</span>
-                <span class="change negative">-0.12%</span>
-            </div>
-            <div class="ticker-item">
-                <span>SILVER</span>
-                <span class="price">&#8377;71,200</span>
-                <span class="change positive">+0.85%</span>
-            </div>
-            <div class="ticker-item">
-                <span>BTC/USD</span>
-                <span class="price">$62,142</span>
-                <span class="change positive">+1.24%</span>
-            </div>
-            <div class="ticker-item">
-                <span>ETH/USD</span>
-                <span class="price">$3,421</span>
-                <span class="change positive">+0.92%</span>
-            </div>
-        </div>
+    <div class="ticker-track" id="ticker-track">
+        <!-- JS will populate with doubled content for seamless loop -->
+        <span class="ticker-item skeleton"
+            ><span class="skeleton-bar"></span></span
+        >
+        <span class="ticker-item skeleton"
+            ><span class="skeleton-bar"></span></span
+        >
+        <span class="ticker-item skeleton"
+            ><span class="skeleton-bar"></span></span
+        >
+        <span class="ticker-item skeleton"
+            ><span class="skeleton-bar"></span></span
+        >
+        <span class="ticker-item skeleton"
+            ><span class="skeleton-bar"></span></span
+        >
+        <span class="ticker-item skeleton"
+            ><span class="skeleton-bar"></span></span
+        >
     </div>
 </div>
 
-<style>
+<script>
+    const API_BASE_URL = import.meta.env.DEV
+        ? "http://localhost:8787"
+        : "https://dbportfolios-backend.blr-bull.workers.dev";
+
+    function renderTicker(
+        items: { name: string; price: string; change: number }[],
+    ) {
+        const singleSet = items
+            .map(
+                (item) =>
+                    `<span class="ticker-item">
+                        <span class="ticker-name">${item.name}</span>
+                        <span class="ticker-price">${item.price}</span>
+                        <span class="ticker-change ${item.change >= 0 ? "positive" : "negative"}">
+                            ${item.change >= 0 ? "+" : ""}${item.change.toFixed(2)}%
+                        </span>
+                    </span>`,
+            )
+            .join("");
+
+        // Double the content so the scroll loops seamlessly
+        const track = document.getElementById("ticker-track");
+        if (track) track.innerHTML = singleSet + singleSet;
+    }
+
+    async function fetchIndices() {
+        try {
+            const res = await fetch(`${API_BASE_URL}/api/market/indices`);
+            const json = (await res.json()) as any;
+            if (json.success && json.data) {
+                renderTicker(json.data);
+            }
+        } catch (err) {
+            console.warn("MarketTicker: failed to fetch live data", err);
+        }
+    }
+
+    fetchIndices();
+    setInterval(fetchIndices, 60_000);
+</script>
+
+<style is:global>
     .market-ticker {
         background: rgba(0, 0, 0, 0.5);
         border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-        padding: 0.75rem 0;
+        padding: 0.6rem 0;
         overflow: hidden;
         white-space: nowrap;
         position: relative;
@@ -80,47 +76,87 @@
         backdrop-filter: blur(8px);
     }
 
-    .ticker-wrapper {
-        display: flex;
-        width: 100%;
+    .ticker-track {
+        display: inline-flex;
+        animation: ticker-scroll 40s linear infinite;
     }
 
-    .ticker-content {
-        display: flex;
-        animation: ticker 30s linear infinite;
-        padding-right: 2rem;
-    }
-
-    @keyframes ticker {
+    @keyframes ticker-scroll {
         0% {
             transform: translateX(0);
         }
         100% {
-            transform: translateX(-100%);
+            transform: translateX(-50%);
         }
     }
 
     .ticker-item {
-        margin: 0 2rem;
-        font-size: 0.875rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0 1.5rem;
+        font-size: 0.8rem;
         font-weight: 600;
-        display: flex;
-        gap: 0.75rem;
+        color: #ffffff;
+        white-space: nowrap;
+        border-right: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .ticker-item:last-child {
+        border-right: none;
+    }
+
+    .ticker-name {
+        color: #94a3b8;
+    }
+
+    .ticker-price {
         color: #ffffff;
     }
 
-    .ticker-item .price {
-        color: #ffffff;
-    }
-    .ticker-item .change.positive {
+    .ticker-change.positive {
         color: #10b981;
     }
-    .ticker-item .change.negative {
+
+    .ticker-change.negative {
         color: #ef4444;
     }
 
+    /* Skeleton loading */
+    .ticker-item.skeleton {
+        gap: 0;
+        border-right: none;
+    }
+
+    .skeleton-bar {
+        display: inline-block;
+        width: 100px;
+        height: 12px;
+        background: linear-gradient(
+            90deg,
+            rgba(255, 255, 255, 0.04) 25%,
+            rgba(255, 255, 255, 0.08) 50%,
+            rgba(255, 255, 255, 0.04) 75%
+        );
+        background-size: 200% 100%;
+        animation: shimmer 1.5s infinite;
+        border-radius: 4px;
+    }
+
+    @keyframes shimmer {
+        0% {
+            background-position: 200% 0;
+        }
+        100% {
+            background-position: -200% 0;
+        }
+    }
+
     @media (prefers-reduced-motion: reduce) {
-        .ticker-content {
+        .ticker-track {
+            animation: none;
+        }
+        .skeleton-bar {
             animation: none;
         }
     }
