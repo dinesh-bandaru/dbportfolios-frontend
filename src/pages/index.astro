@@ -39,7 +39,13 @@ import BrandLogo from "../components/BrandLogo.astro";
         <nav class="navbar">
             <div class="nav-content">
                 <div class="logo">
-                    <BrandLogo width="160" height="28" />
+                    <a
+                        id="logo-link"
+                        href="/"
+                        style="display:flex;align-items:center;color:#fff;text-decoration:none;"
+                    >
+                        <BrandLogo width="160" height="28" />
+                    </a>
                 </div>
                 <div class="nav-actions">
                     <a href="/login?mode=login" class="nav-link">Log In</a>
@@ -138,14 +144,23 @@ import BrandLogo from "../components/BrandLogo.astro";
             </div>
         </section>
     </main>
+
+    <script>
+        const logoLink = document.getElementById("logo-link");
+        if (logoLink && localStorage.getItem("auth_token")) {
+            logoLink.setAttribute("href", "/dashboard");
+        }
+    </script>
 </Layout>
 
 <style>
     .landing-container {
-        min-height: 100vh;
+        height: calc(100vh - 41px);
         color: var(--text-primary);
         position: relative;
-        overflow-x: hidden;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
     }
 
     /* Background */
@@ -413,7 +428,7 @@ import BrandLogo from "../components/BrandLogo.astro";
 
     /* Hero */
     .hero {
-        padding: 4rem 1.5rem 2rem;
+        padding: 1rem 1.5rem 0.5rem;
         text-align: center;
         position: relative;
         z-index: 10;
@@ -421,24 +436,24 @@ import BrandLogo from "../components/BrandLogo.astro";
 
     .badge {
         display: inline-block;
-        padding: 0.5rem 1rem;
+        padding: 0.35rem 0.75rem;
         background: rgba(16, 185, 129, 0.1);
         color: var(--accent-green);
         border-radius: 99px;
-        font-size: 0.75rem;
+        font-size: 0.7rem;
         font-weight: 700;
         text-transform: uppercase;
         letter-spacing: 0.05em;
-        margin-bottom: 1.25rem;
+        margin-bottom: 0.5rem;
         border: 1px solid rgba(16, 185, 129, 0.2);
     }
 
     h1 {
-        font-size: clamp(2.5rem, 8vw, 4.5rem);
+        font-size: clamp(1.75rem, 5vw, 2.75rem);
         font-weight: 900;
         line-height: 1.1;
         letter-spacing: -0.04em;
-        margin-bottom: 1rem;
+        margin-bottom: 0.35rem;
         max-width: 900px;
         margin-inline: auto;
     }
@@ -455,36 +470,38 @@ import BrandLogo from "../components/BrandLogo.astro";
     }
 
     .hero p {
-        font-size: clamp(1rem, 2vw, 1.25rem);
+        font-size: clamp(0.8rem, 1.3vw, 0.95rem);
         color: var(--text-secondary);
-        max-width: 600px;
-        margin: 0 auto 1.5rem;
-        line-height: 1.6;
+        max-width: 550px;
+        margin: 0 auto 0.5rem;
+        line-height: 1.4;
     }
 
     .hero-actions {
         display: flex;
-        gap: 1rem;
+        gap: 0.75rem;
         justify-content: center;
     }
 
     .btn-primary {
         background: var(--accent-green);
         color: #000;
-        padding: 0.875rem 2rem;
-        border-radius: 14px;
+        padding: 0.5rem 1.25rem;
+        border-radius: 10px;
         text-decoration: none;
         font-weight: 700;
+        font-size: 0.85rem;
         transition: transform 0.2s;
     }
 
     .btn-secondary {
         border: 1px solid var(--border-color);
         color: var(--text-primary);
-        padding: 0.875rem 2rem;
-        border-radius: 14px;
+        padding: 0.5rem 1.25rem;
+        border-radius: 10px;
         text-decoration: none;
         font-weight: 600;
+        font-size: 0.85rem;
         transition: background 0.2s;
     }
 
@@ -497,7 +514,7 @@ import BrandLogo from "../components/BrandLogo.astro";
 
     /* ─── Features Section ─── */
     .features {
-        padding: 2.5rem 1.5rem 2rem;
+        padding: 0.25rem 1.5rem 0.25rem;
         max-width: 960px;
         margin: 0 auto;
         position: relative;
@@ -507,7 +524,7 @@ import BrandLogo from "../components/BrandLogo.astro";
     /* Stat Callout */
     .stat-block {
         text-align: center;
-        margin-bottom: 2.5rem;
+        margin-bottom: 0.35rem;
         position: relative;
     }
 
@@ -541,7 +558,7 @@ import BrandLogo from "../components/BrandLogo.astro";
     }
 
     .stat-number {
-        font-size: 5rem;
+        font-size: 2.75rem;
         font-weight: 800;
         letter-spacing: -0.04em;
         background: linear-gradient(135deg, #10b981, #34d399, #6ee7b7);
@@ -550,14 +567,14 @@ import BrandLogo from "../components/BrandLogo.astro";
         background-clip: text;
         display: block;
         line-height: 1;
-        margin-bottom: 1rem;
+        margin-bottom: 0.25rem;
         position: relative;
     }
 
     .stat-text {
         color: var(--text-secondary);
-        font-size: 1.1rem;
-        line-height: 1.6;
+        font-size: 0.8rem;
+        line-height: 1.3;
         max-width: 420px;
         margin: 0 auto;
     }
@@ -570,7 +587,7 @@ import BrandLogo from "../components/BrandLogo.astro";
     .feature-grid {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
-        gap: 1.25rem;
+        gap: 0.5rem;
     }
 
     /* Glow Card — animated gradient border */
@@ -620,32 +637,32 @@ import BrandLogo from "../components/BrandLogo.astro";
         background: rgba(15, 15, 18, 0.8);
         backdrop-filter: blur(16px);
         border-radius: 15px;
-        padding: 1.75rem 1.75rem 1.5rem;
+        padding: 0.75rem 1rem 0.625rem;
         position: relative;
         overflow: hidden;
     }
 
     .card-number {
-        font-size: 0.7rem;
+        font-size: 0.65rem;
         font-weight: 700;
         letter-spacing: 0.15em;
         color: var(--accent-green);
         opacity: 0.6;
         display: block;
-        margin-bottom: 0.75rem;
+        margin-bottom: 0.35rem;
     }
 
     .card-inner h3 {
-        font-size: 1.1rem;
+        font-size: 0.85rem;
         font-weight: 700;
         color: var(--text-primary);
-        margin-bottom: 0.5rem;
+        margin-bottom: 0.15rem;
     }
 
     .card-inner p {
         color: var(--text-secondary);
-        font-size: 0.875rem;
-        line-height: 1.6;
+        font-size: 0.75rem;
+        line-height: 1.35;
     }
 
     /* Green accent line at bottom of card */
@@ -666,13 +683,13 @@ import BrandLogo from "../components/BrandLogo.astro";
     /* Bottom CTA */
     .features-cta {
         text-align: center;
-        margin-top: 2rem;
+        margin-top: 0.5rem;
     }
 
     .features-cta p {
-        font-size: 1.15rem;
+        font-size: 0.9rem;
         color: var(--text-secondary);
-        margin-bottom: 1.5rem;
+        margin-bottom: 0.5rem;
     }
 
     .features-cta .btn-primary {

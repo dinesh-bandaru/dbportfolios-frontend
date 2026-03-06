@@ -44,7 +44,9 @@ const API_BASE_URL = import.meta.env.DEV
 
         <article class="login-card">
             <header class="brand">
-                <BrandLogo width="200" height="36" className="login-logo" />
+                <a id="logo-link" href="/" style="display:inline-flex;color:#fff;text-decoration:none;">
+                    <BrandLogo width="200" height="36" className="login-logo" />
+                </a>
                 <h1>{title}</h1>
             </header>
 
@@ -322,6 +324,12 @@ const API_BASE_URL = import.meta.env.DEV
             if (eyeOffIcon)
                 eyeOffIcon.style.display = isPassword ? "block" : "none";
         });
+
+        // Update logo link based on auth state
+        const logoLink = document.getElementById("logo-link");
+        if (logoLink && localStorage.getItem("auth_token")) {
+            logoLink.setAttribute("href", "/dashboard");
+        }
     </script>
 </Layout>
 
