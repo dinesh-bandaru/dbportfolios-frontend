@@ -2,23 +2,42 @@
 import Layout from "../layouts/Layout.astro";
 import MarketTicker from "../components/MarketTicker.astro";
 import BrandLogo from "../components/BrandLogo.astro";
+
+const API_BASE_URL = import.meta.env.DEV
+    ? "http://localhost:8787"
+    : "https://dbportfolios-backend.blr-bull.workers.dev";
 ---
 
-<Layout title="Dashboard | DB Portfolios">
+<Layout title="Course | DB Portfolios">
     <div id="auth-checker" style="display: none;">
         <MarketTicker />
 
         <nav class="dashboard-nav">
             <div class="nav-container">
                 <div class="logo">
-                    <a href="/dashboard" style="display:flex;align-items:center;color:#fff;text-decoration:none;">
+                    <a
+                        href="/dashboard"
+                        style="display:flex;align-items:center;color:#fff;text-decoration:none;"
+                    >
                         <BrandLogo width="150" height="26" />
                     </a>
                 </div>
                 <div class="nav-links">
-                    <a href="/dashboard" class="active">Overview</a>
-                    <a href="/assets">Assets</a>
-                    <a href="/analytics">Analytics</a>
+                    <a href="/dashboard" class="active">
+                        <svg
+                            width="16"
+                            height="16"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            ><polygon points="5 3 19 12 5 21 5 3"
+                            ></polygon></svg
+                        >
+                        Course
+                    </a>
                 </div>
                 <div class="user-menu">
                     <span id="user-name">Loading...</span>
@@ -27,126 +46,234 @@ import BrandLogo from "../components/BrandLogo.astro";
             </div>
         </nav>
 
-        <main class="dashboard-content">
-            <header class="content-header">
-                <div>
-                    <h1>Portfolio Overview</h1>
-                    <p class="text-secondary">
-                        Track your wealth across all asset classes
-                    </p>
-                </div>
-                <div class="total-value">
-                    <span class="label">Total Net Worth</span>
-                    <span class="amount">&#8377;12,45,600</span>
-                    <span class="trend positive">↑ 12.4% vs last month</span>
-                </div>
-            </header>
-
-            <section class="chart-section glass-card">
-                <div class="card-header">
-                    <h2>Growth Over Time</h2>
-                    <div class="chart-filters">
-                        <button class="filter-btn active">1M</button>
-                        <button class="filter-btn">3M</button>
-                        <button class="filter-btn">1Y</button>
-                        <button class="filter-btn">All</button>
+        <main class="course-layout" data-api-url={API_BASE_URL}>
+            <!-- Left: Course Outline Sidebar -->
+            <aside class="course-sidebar left-sidebar" id="left-sidebar">
+                <div class="sidebar-card glass-card">
+                    <div class="sidebar-header">
+                        <h2>Course Outline</h2>
+                        <span class="progress-badge" id="progress-badge">—</span
+                        >
+                    </div>
+                    <div class="lesson-list" id="lesson-list">
+                        <div class="sidebar-loading">
+                            <div class="loading-spinner small"></div>
+                        </div>
+                    </div>
+                    <div class="sidebar-footer">
+                        <div class="course-progress-bar">
+                            <div
+                                class="progress-fill"
+                                id="progress-fill"
+                                style="width: 0%"
+                            >
+                            </div>
+                        </div>
+                        <p class="progress-text">
+                            Start watching to track progress
+                        </p>
                     </div>
                 </div>
 
-                <div class="chart-container">
-                    <!-- Custom SVG Chart -->
-                    <svg
-                        class="growth-chart"
-                        viewBox="0 0 800 300"
-                        preserveAspectRatio="none"
-                    >
-                        <defs>
-                            <linearGradient
-                                id="chartGradient"
-                                x1="0%"
-                                y1="0%"
-                                x2="0%"
-                                y2="100%"
-                            >
-                                <stop
-                                    offset="0%"
-                                    style="stop-color:var(--accent-green); stop-opacity:0.2"
-                                ></stop>
-                                <stop
-                                    offset="100%"
-                                    style="stop-color:var(--accent-green); stop-opacity:0"
-                                ></stop>
-                            </linearGradient>
-                        </defs>
-                        <!-- Area path -->
-                        <path
-                            d="M0,250 Q100,220 200,240 T400,120 T600,160 T800,40 V300 H0 Z"
-                            fill="url(#chartGradient)"></path>
-                        <!-- Line path -->
-                        <path
-                            d="M0,250 Q100,220 200,240 T400,120 T600,160 T800,40"
+                <div class="info-card glass-card">
+                    <div class="info-row">
+                        <svg
+                            width="16"
+                            height="16"
+                            viewBox="0 0 24 24"
                             fill="none"
                             stroke="var(--accent-green)"
-                            stroke-width="3"
-                            stroke-linecap="round"></path>
-                        <!-- Data Points -->
-                        <circle
-                            cx="200"
-                            cy="240"
-                            r="4"
-                            fill="var(--accent-green)"></circle>
-                        <circle
-                            cx="400"
-                            cy="120"
-                            r="4"
-                            fill="var(--accent-green)"></circle>
-                        <circle
-                            cx="600"
-                            cy="160"
-                            r="4"
-                            fill="var(--accent-green)"></circle>
-                        <circle
-                            cx="800"
-                            cy="40"
-                            r="6"
-                            fill="#fff"
+                            stroke-width="2"
+                            ><circle cx="12" cy="12" r="10"></circle><polyline
+                                points="12 6 12 12 16 14"></polyline></svg
+                        >
+                        <span id="info-total-duration">—</span>
+                    </div>
+                    <div class="info-row">
+                        <svg
+                            width="16"
+                            height="16"
+                            viewBox="0 0 24 24"
+                            fill="none"
                             stroke="var(--accent-green)"
-                            stroke-width="2"></circle>
-                    </svg>
-
-                    <div class="chart-axis-x">
-                        <span>Jan</span><span>Feb</span><span>Mar</span><span
-                            >Apr</span
-                        ><span>May</span><span>Jun</span>
+                            stroke-width="2"
+                            ><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"
+                            ></path><path
+                                d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"
+                            ></path></svg
+                        >
+                        <span id="info-lesson-count">—</span>
+                    </div>
+                    <div class="info-row">
+                        <svg
+                            width="16"
+                            height="16"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="var(--accent-green)"
+                            stroke-width="2"
+                            ><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"
+                            ></path><polyline points="22 4 12 14.01 9 11.01"
+                            ></polyline></svg
+                        >
+                        <span>Certificate on completion</span>
                     </div>
                 </div>
-            </section>
+            </aside>
 
-            <section class="asset-grid">
-                <div class="stat-card glass-card">
-                    <span class="icon">📈</span>
-                    <h3>Stocks</h3>
-                    <p class="value">&#8377;8,42,000</p>
-                    <p class="change positive">+2.4% today</p>
+            <!-- Middle: Main content area (Video) -->
+            <div class="course-main" id="course-main">
+                <div class="main-top-bar">
+                    <button
+                        id="toggle-sidebar"
+                        class="toggle-btn highlight-hover"
+                        title="Toggle Outline"
+                    >
+                        <svg
+                            width="20"
+                            height="20"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            ><line x1="3" y1="12" x2="21" y2="12"></line><line
+                                x1="3"
+                                y1="6"
+                                x2="21"
+                                y2="6"></line><line
+                                x1="3"
+                                y1="18"
+                                x2="21"
+                                y2="18"></line></svg
+                        >
+                    </button>
+                    <div class="lesson-badge">
+                        <span class="lesson-number">Lesson 1</span>
+                        <span class="lesson-divider">·</span>
+                        <span class="lesson-duration" id="lesson-duration"
+                            >—</span
+                        >
+                    </div>
                 </div>
-                <div class="stat-card glass-card">
-                    <span class="icon">🪙</span>
-                    <h3>Gold/Silver</h3>
-                    <p class="value">&#8377;2,85,000</p>
-                    <p class="change negative">-0.5% today</p>
+
+                <div class="video-container glass-card" id="video-container">
+                    <div class="video-loading" id="video-loading">
+                        <div class="loading-spinner"></div>
+                        <p>Loading course video...</p>
+                    </div>
+                    <div
+                        class="video-error"
+                        id="video-error"
+                        style="display:none;"
+                    >
+                        <svg
+                            width="48"
+                            height="48"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="var(--accent-red)"
+                            stroke-width="1.5"
+                            ><circle cx="12" cy="12" r="10"></circle><line
+                                x1="12"
+                                y1="8"
+                                x2="12"
+                                y2="12"></line><line
+                                x1="12"
+                                y1="16"
+                                x2="12.01"
+                                y2="16"></line></svg
+                        >
+                        <p id="video-error-text">Unable to load video.</p>
+                        <button class="retry-btn" id="retry-btn">Retry</button>
+                    </div>
                 </div>
-                <div class="stat-card glass-card">
-                    <span class="icon">₿</span>
-                    <h3>Crypto</h3>
-                    <p class="value">&#8377;1,18,600</p>
-                    <p class="change positive">+5.2% today</p>
+
+                <div class="lesson-info">
+                    <div class="lesson-header">
+                        <h1 id="lesson-title">Loading...</h1>
+                        <p id="lesson-description" class="lesson-desc">
+                            Loading course details...
+                        </p>
+                    </div>
                 </div>
-            </section>
+            </div>
+
+            <!-- Right: AI Chat -->
+            <aside class="course-sidebar right-sidebar" id="right-sidebar">
+                <div class="chat-container glass-card">
+                    <div class="chat-header">
+                        <div class="chat-title">
+                            <svg
+                                width="16"
+                                height="16"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="var(--accent-green)"
+                                stroke-width="2"
+                                ><path
+                                    d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"
+                                ></path></svg
+                            >
+                            <h3>AI Assistant</h3>
+                        </div>
+                        <p>Ask questions about this lesson</p>
+                    </div>
+                    <div class="chat-messages" id="chat-messages">
+                        <div class="chat-message assistant">
+                            <div class="chat-message-header">
+                                <svg
+                                    width="14"
+                                    height="14"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    ><path
+                                        d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"
+                                    ></path></svg
+                                > AI Assistant
+                            </div>
+                            <div class="chat-bubble">
+                                <p style="margin:0">
+                                    Hi! I'm your AI assistant. Ask me anything
+                                    about the current video.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chat-input-area">
+                        <input
+                            type="text"
+                            id="chat-input"
+                            placeholder="Type your question..."
+                            autocomplete="off"
+                        />
+                        <button
+                            id="chat-send"
+                            class="send-btn"
+                            title="Send message"
+                        >
+                            <svg
+                                width="16"
+                                height="16"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                ><line x1="22" y1="2" x2="11" y2="13"
+                                ></line><polygon
+                                    points="22 2 15 22 11 13 2 9 22 2"
+                                ></polygon></svg
+                            >
+                        </button>
+                    </div>
+                </div>
+            </aside>
         </main>
     </div>
 
     <script>
-        // Decode JWT payload (base64url → JSON)
+        // ─── Auth check ───
         function decodeJwtPayload(token: string) {
             try {
                 const base64 = token
@@ -169,29 +296,436 @@ import BrandLogo from "../components/BrandLogo.astro";
             const userName = document.getElementById("user-name");
             if (userName) {
                 const payload = decodeJwtPayload(token);
-                if (payload?.name) {
+                if (payload?.name)
                     userName.textContent = `Welcome, ${payload.name}!`;
-                } else if (payload?.email) {
+                else if (payload?.email)
                     userName.textContent = `Welcome, ${payload.email}!`;
+                else userName.textContent = "Welcome back!";
+            }
+        }
+
+        // ─── Logout ───
+        document.getElementById("logout-btn")?.addEventListener("click", () => {
+            localStorage.removeItem("auth_token");
+            window.location.href = "/login";
+        });
+
+        // ─── Fetch course data ───
+        const courseLayout = document.querySelector(
+            ".course-layout",
+        ) as HTMLElement;
+        const apiBaseUrl = courseLayout?.dataset.apiUrl || "";
+        let currentLessonId: string | null = null;
+
+        // ─── Load sidebar lesson list ───
+        async function loadLessonList() {
+            try {
+                const res = await fetch(
+                    `${apiBaseUrl}/api/protected/course/lessons`,
+                    {
+                        headers: { Authorization: `Bearer ${token}` },
+                    },
+                );
+                if (!res.ok) throw new Error("Failed to load lessons");
+
+                const data = (await res.json()) as {
+                    lessons: Array<{
+                        id: string;
+                        title: string;
+                        description: string | null;
+                        sortOrder: number;
+                        duration: string | null;
+                    }>;
+                    totalDuration: string;
+                    lessonCount: number;
+                };
+
+                // Update course info card
+                const infoTotalDuration = document.getElementById(
+                    "info-total-duration",
+                );
+                const infoLessonCount =
+                    document.getElementById("info-lesson-count");
+                const progressBadge = document.getElementById("progress-badge");
+
+                if (infoTotalDuration)
+                    infoTotalDuration.textContent = data.totalDuration
+                        ? `${data.totalDuration} total`
+                        : "—";
+                if (infoLessonCount)
+                    infoLessonCount.textContent = `${data.lessonCount} Lesson${data.lessonCount !== 1 ? "s" : ""}`;
+                if (progressBadge)
+                    progressBadge.textContent = `0 / ${data.lessonCount}`;
+
+                // Render sidebar lesson items
+                const lessonList = document.getElementById("lesson-list");
+                if (!lessonList) return;
+                lessonList.innerHTML = "";
+
+                data.lessons.forEach((lesson, index) => {
+                    const item = document.createElement("div");
+                    item.className = "lesson-item";
+                    item.dataset.lessonId = lesson.id;
+                    item.innerHTML = `
+                        <div class="lesson-item-status">
+                            <div class="status-ring">
+                                <svg width="14" height="14" viewBox="0 0 24 24"
+                                    fill="currentColor" stroke="none">
+                                    <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="lesson-item-info">
+                            <span class="lesson-item-label">Lesson ${index + 1}</span>
+                            <span class="lesson-item-title">${lesson.title}</span>
+                        </div>
+                        <span class="lesson-item-duration">${lesson.duration || "—"}</span>
+                    `;
+                    item.addEventListener("click", () =>
+                        selectLesson(lesson.id),
+                    );
+                    lessonList.appendChild(item);
+                });
+
+                // Auto-select first lesson
+                if (data.lessons.length > 0) {
+                    selectLesson(data.lessons[0].id);
+                }
+            } catch (err) {
+                console.error("Error loading lessons:", err);
+            }
+        }
+
+        // ─── Select and play a lesson ───
+        async function selectLesson(lessonId: string) {
+            if (currentLessonId === lessonId) return;
+            currentLessonId = lessonId;
+
+            // Reset Chat UI for new lesson
+            const chatMessages = document.getElementById("chat-messages");
+            if (chatMessages) {
+                chatMessages.innerHTML = "";
+                const history = window.chatHistories?.[lessonId] || [];
+                if (history.length === 0) {
+                    const temp = currentLessonId;
+                    currentLessonId = null; // Prevent pushing to history
+                    addChatMessage(
+                        "assistant",
+                        "Hi! I'm your AI assistant. Ask me anything about this lesson.",
+                    );
+                    currentLessonId = temp;
                 } else {
-                    userName.textContent = "Welcome back!";
+                    const temp = currentLessonId;
+                    currentLessonId = null;
+                    history.forEach((msg: any) =>
+                        addChatMessage(msg.role, msg.content),
+                    );
+                    currentLessonId = temp;
+                }
+            }
+
+            // Update sidebar active state
+            document.querySelectorAll(".lesson-item").forEach((el) => {
+                const item = el as HTMLElement;
+                if (item.dataset.lessonId === lessonId) {
+                    item.classList.add("active");
+                    const ring = item.querySelector(".status-ring");
+                    if (ring) ring.classList.add("playing");
+                } else {
+                    item.classList.remove("active");
+                    const ring = item.querySelector(".status-ring");
+                    if (ring) ring.classList.remove("playing");
+                }
+            });
+
+            // Load the video
+            await loadLesson(lessonId);
+        }
+
+        // ─── Load a specific lesson video ───
+        async function loadLesson(lessonId: string) {
+            const loadingEl = document.getElementById("video-loading");
+            const errorEl = document.getElementById("video-error");
+            const errorText = document.getElementById("video-error-text");
+            const videoContainer = document.getElementById("video-container");
+
+            // Remove old iframe
+            const oldIframe = videoContainer?.querySelector("iframe");
+            if (oldIframe) oldIframe.remove();
+
+            if (loadingEl) loadingEl.style.display = "flex";
+            if (errorEl) errorEl.style.display = "none";
+
+            try {
+                const res = await fetch(
+                    `${apiBaseUrl}/api/protected/course?lessonId=${encodeURIComponent(lessonId)}`,
+                    { headers: { Authorization: `Bearer ${token}` } },
+                );
+
+                if (!res.ok) {
+                    throw new Error(
+                        res.status === 401
+                            ? "Session expired. Please log in again."
+                            : "Failed to load lesson.",
+                    );
+                }
+
+                const data = (await res.json()) as {
+                    signedToken: string;
+                    customerCode: string;
+                    lesson: {
+                        id: string;
+                        title: string;
+                        description: string | null;
+                        duration: string;
+                        sortOrder: number;
+                    };
+                };
+
+                // Hide loading
+                if (loadingEl) loadingEl.style.display = "none";
+
+                // Inject video iframe
+                const iframe = document.createElement("iframe");
+                iframe.src = `https://customer-${data.customerCode}.cloudflarestream.com/${data.signedToken}/iframe`;
+                iframe.style.position = "absolute";
+                iframe.style.inset = "0";
+                iframe.style.width = "100%";
+                iframe.style.height = "100%";
+                iframe.style.border = "none";
+                iframe.style.borderRadius = "16px";
+                iframe.setAttribute(
+                    "allow",
+                    "accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture",
+                );
+                iframe.setAttribute("allowfullscreen", "true");
+                videoContainer?.appendChild(iframe);
+
+                // Update lesson info below video
+                const lessonNumber = document.querySelector(".lesson-number");
+                const lessonTitle = document.getElementById("lesson-title");
+                const lessonDesc =
+                    document.getElementById("lesson-description");
+                const lessonDuration =
+                    document.getElementById("lesson-duration");
+
+                if (lessonNumber)
+                    lessonNumber.textContent = `Lesson ${data.lesson.sortOrder}`;
+                if (lessonTitle) lessonTitle.textContent = data.lesson.title;
+                if (lessonDesc)
+                    lessonDesc.textContent = data.lesson.description || "";
+                if (lessonDuration)
+                    lessonDuration.textContent = data.lesson.duration;
+            } catch (err: any) {
+                if (loadingEl) loadingEl.style.display = "none";
+                if (errorEl) errorEl.style.display = "flex";
+                if (errorText)
+                    errorText.textContent =
+                        err.message || "Unable to load video.";
+
+                if (err.message?.includes("Session expired")) {
+                    setTimeout(() => {
+                        window.location.href = "/login";
+                    }, 2000);
                 }
             }
         }
 
-        // Logout
-        document.getElementById("logout-btn")?.addEventListener("click", () => {
-            localStorage.removeItem("auth_token");
-            window.location.href = "/login";
+        // ─── Sidebar & Tabs ───
+        const toggleSidebarBtn = document.getElementById("toggle-sidebar");
+        const courseLayoutCont = document.querySelector(".course-layout");
+
+        toggleSidebarBtn?.addEventListener("click", () => {
+            courseLayoutCont?.classList.toggle("sidebar-collapsed");
+        });
+
+        // ─── AI Chat ───
+        const chatInput = document.getElementById(
+            "chat-input",
+        ) as HTMLInputElement;
+        const chatSend = document.getElementById(
+            "chat-send",
+        ) as HTMLButtonElement;
+
+        declare global {
+            interface Window {
+                chatHistories: Record<
+                    string,
+                    { role: "user" | "assistant"; content: string }[]
+                >;
+            }
+        }
+        window.chatHistories = window.chatHistories || {};
+
+        function addChatMessage(role: "user" | "assistant", content: string) {
+            const chatMessages = document.getElementById("chat-messages");
+            if (!chatMessages) return null;
+
+            const msgDiv = document.createElement("div");
+            msgDiv.className = `chat-message ${role}`;
+
+            const header = document.createElement("div");
+            header.className = "chat-message-header";
+
+            if (role === "assistant") {
+                header.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg> AI Assistant`;
+            } else {
+                header.innerHTML = `You <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>`;
+            }
+
+            const bubbleDiv = document.createElement("div");
+            bubbleDiv.className = "chat-bubble";
+            bubbleDiv.innerHTML = `<p style="margin:0">${content}</p>`;
+
+            msgDiv.appendChild(header);
+            msgDiv.appendChild(bubbleDiv);
+
+            chatMessages.appendChild(msgDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            if (currentLessonId && role !== "assistant") {
+                if (!window.chatHistories[currentLessonId])
+                    window.chatHistories[currentLessonId] = [];
+                window.chatHistories[currentLessonId].push({ role, content });
+            }
+
+            return bubbleDiv;
+        }
+
+        async function sendChatMessage() {
+            const text = chatInput.value.trim();
+            if (!text || !currentLessonId) return;
+
+            addChatMessage("user", text);
+            chatInput.value = "";
+            chatSend.disabled = true;
+
+            const history =
+                window.chatHistories[currentLessonId]?.slice(0, -1) || [];
+
+            try {
+                const res = await fetch(
+                    `${apiBaseUrl}/api/protected/course/chat`,
+                    {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            Authorization: `Bearer ${token}`,
+                        },
+                        body: JSON.stringify({
+                            lessonId: currentLessonId,
+                            message: text,
+                            history: history,
+                        }),
+                    },
+                );
+
+                if (!res.ok) throw new Error("Chat request failed");
+
+                const assistantBubble = addChatMessage("assistant", "");
+                if (!assistantBubble) return;
+                const contentP = assistantBubble.querySelector("p");
+
+                const reader = res.body?.getReader();
+                const decoder = new TextDecoder();
+                let fullText = "";
+
+                if (reader && contentP) {
+                    let buffer = "";
+                    while (true) {
+                        const { done, value } = await reader.read();
+                        if (done) break;
+                        buffer += decoder.decode(value, { stream: true });
+                        const lines = buffer.split("\n");
+                        buffer = lines.pop() || ""; // keep incomplete line
+                        for (const line of lines) {
+                            if (line.startsWith("data: ")) {
+                                const dataStr = line.slice(6);
+                                if (dataStr.trim() === "[DONE]") continue;
+                                try {
+                                    const parsed = JSON.parse(dataStr);
+                                    let contentChunk = "";
+
+                                    if (parsed.response) {
+                                        contentChunk = parsed.response;
+                                    } else if (
+                                        parsed.choices &&
+                                        parsed.choices.length > 0
+                                    ) {
+                                        const delta = parsed.choices[0].delta;
+                                        if (delta && delta.content) {
+                                            contentChunk = delta.content;
+                                        }
+                                    }
+
+                                    if (contentChunk) {
+                                        fullText += contentChunk;
+                                        contentP.innerHTML = fullText.replace(
+                                            /\n/g,
+                                            "<br/>",
+                                        );
+                                        const chatMsgs =
+                                            document.getElementById(
+                                                "chat-messages",
+                                            );
+                                        if (chatMsgs)
+                                            chatMsgs.scrollTop =
+                                                chatMsgs.scrollHeight;
+                                    }
+                                } catch (e) {
+                                    console.error(
+                                        "Parse error on chunk:",
+                                        dataStr,
+                                    );
+                                }
+                            }
+                        }
+                    }
+                }
+
+                if (currentLessonId) {
+                    if (!window.chatHistories[currentLessonId])
+                        window.chatHistories[currentLessonId] = [];
+                    window.chatHistories[currentLessonId].push({
+                        role: "assistant",
+                        content: fullText,
+                    });
+                }
+            } catch (err) {
+                console.error("Chat error:", err);
+                addChatMessage(
+                    "assistant",
+                    "Sorry, I encountered an error answering that. Please try again.",
+                );
+            } finally {
+                chatSend.disabled = false;
+                chatInput.focus();
+            }
+        }
+
+        chatSend?.addEventListener("click", sendChatMessage);
+        chatInput?.addEventListener("keypress", (e) => {
+            if (e.key === "Enter") sendChatMessage();
+        });
+
+        // ─── Initialize ───
+        loadLessonList();
+
+        // Retry button
+        document.getElementById("retry-btn")?.addEventListener("click", () => {
+            if (currentLessonId) loadLesson(currentLessonId);
+            else loadLessonList();
         });
     </script>
 </Layout>
 
 <style>
-    /* Nav */
+    /* ─── Nav ─── */
     .dashboard-nav {
         padding: 0.4rem 2rem;
         border-bottom: 1px solid var(--border-color);
+        background: rgba(10, 10, 11, 0.6);
+        backdrop-filter: blur(12px);
     }
 
     .nav-container {
@@ -210,12 +744,6 @@ import BrandLogo from "../components/BrandLogo.astro";
         font-size: 1.25rem;
     }
 
-    .logo svg {
-        width: 24px;
-        height: 24px;
-        color: var(--accent-green);
-    }
-
     .nav-links {
         display: flex;
         gap: 2rem;
@@ -225,6 +753,9 @@ import BrandLogo from "../components/BrandLogo.astro";
         color: var(--text-secondary);
         font-weight: 500;
         transition: color 0.2s;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
     }
     .nav-links a.active {
         color: var(--accent-green);
@@ -238,6 +769,11 @@ import BrandLogo from "../components/BrandLogo.astro";
         display: flex;
         align-items: center;
         gap: 1.5rem;
+        font-size: 0.875rem;
+    }
+    #user-name {
+        color: var(--text-secondary);
+        font-weight: 500;
     }
     .logout-btn {
         background: rgba(239, 68, 68, 0.1);
@@ -247,6 +783,8 @@ import BrandLogo from "../components/BrandLogo.astro";
         border-radius: 8px;
         cursor: pointer;
         font-weight: 600;
+        font-family: inherit;
+        font-size: 0.8125rem;
         transition: all 0.2s;
     }
     .logout-btn:hover {
@@ -254,148 +792,512 @@ import BrandLogo from "../components/BrandLogo.astro";
         color: white;
     }
 
-    /* Content Area */
-    .dashboard-content {
-        max-width: 1400px;
+    /* ─── Course Layout ─── */
+    .course-layout {
+        max-width: 1600px;
         margin: 0 auto;
-        padding: 3rem 2rem;
+        padding: 1.5rem 2rem;
+        display: grid;
+        grid-template-columns: 320px 1fr 320px;
+        gap: 1.5rem;
+        min-height: calc(100vh - 120px);
+        transition: grid-template-columns 0.3s ease;
+    }
+    .course-layout.sidebar-collapsed {
+        grid-template-columns: 0fr 1fr 320px;
+        gap: 1.5rem; /* Maintain gap for the right sidebar */
+    }
+    .course-layout.sidebar-collapsed .left-sidebar {
+        opacity: 0;
+        pointer-events: none;
     }
 
-    .content-header {
+    /* ─── Sidebars & Content ─── */
+    .course-sidebar {
         display: flex;
-        justify-content: space-between;
-        align-items: flex-end;
-        margin-bottom: 3rem;
+        flex-direction: column;
+        gap: 1.25rem;
+        overflow: hidden;
+        transition: opacity 0.3s ease;
     }
-
-    h1 {
-        font-size: 2.25rem;
-        font-weight: 800;
-        margin: 0;
-        letter-spacing: -0.02em;
-    }
-    .text-secondary {
-        color: var(--text-secondary);
-        margin-top: 0.5rem;
-    }
-
-    .total-value {
-        text-align: right;
-    }
-    .total-value .label {
-        display: block;
-        color: var(--text-secondary);
-        font-size: 0.875rem;
-        font-weight: 600;
-    }
-    .total-value .amount {
-        display: block;
-        font-size: 2.5rem;
-        font-weight: 900;
-        margin: 0.25rem 0;
-    }
-    .trend.positive {
-        color: var(--accent-green);
-        font-size: 0.875rem;
-        font-weight: 600;
-    }
-
-    /* Chart Section */
-    .chart-section {
-        padding: 2rem;
-        margin-bottom: 2rem;
-    }
-    .card-header {
+    .course-main {
         display: flex;
-        justify-content: space-between;
+        flex-direction: column;
+        min-width: 0;
+    }
+
+    .main-top-bar {
+        display: flex;
         align-items: center;
-        margin-bottom: 2rem;
+        gap: 1rem;
+        margin-bottom: 1.25rem;
     }
-    h2 {
-        font-size: 1.25rem;
-        font-weight: 700;
-        margin: 0;
+    .toggle-btn {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid var(--border-color);
+        color: var(--text-secondary);
+        width: 40px;
+        height: 40px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.2s;
+        flex-shrink: 0;
+    }
+    .toggle-btn:hover {
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
     }
 
-    .chart-filters {
+    /* ─── AI Chat ─── */
+    .chat-container {
+        display: flex;
+        flex-direction: column;
+        height: calc(100vh - 200px);
+        min-height: 500px;
+        padding: 0;
+        overflow: hidden;
+    }
+    .chat-header {
+        padding: 1rem 1.25rem;
+        border-bottom: 1px solid var(--border-color);
+        background: rgba(255, 255, 255, 0.02);
+    }
+    .chat-title {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 0.25rem;
+    }
+    .chat-title h3 {
+        margin: 0;
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--text-primary);
+    }
+    .chat-header p {
+        color: var(--text-secondary);
+        font-size: 0.8rem;
+        margin: 0;
+    }
+    .chat-messages {
+        flex: 1;
+        overflow-y: auto;
+        padding: 1.25rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+    .chat-message {
+        display: flex;
+        flex-direction: column;
+        gap: 0.4rem;
+        max-width: 90%;
+        word-wrap: break-word;
+    }
+    .chat-message-header {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+    .chat-message.assistant .chat-message-header {
+        color: var(--accent-green);
+    }
+    .chat-message.user .chat-message-header {
+        color: rgba(255, 255, 255, 0.6);
+        flex-direction: row-reverse;
+    }
+    .chat-bubble {
+        padding: 0.875rem 1rem;
+        border-radius: 12px;
+        font-size: 0.875rem;
+        line-height: 1.5;
+    }
+    .chat-message.assistant .chat-bubble {
+        background: rgba(16, 185, 129, 0.08);
+        color: var(--text-primary);
+        border: 1px solid rgba(16, 185, 129, 0.2);
+        border-top-left-radius: 4px;
+    }
+    .chat-message.user {
+        align-self: flex-end;
+    }
+    .chat-message.assistant {
+        align-self: flex-start;
+    }
+    .chat-message.user .chat-bubble {
+        background: rgba(255, 255, 255, 0.08);
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-top-right-radius: 4px;
+    }
+    .chat-input-area {
+        padding: 1rem;
+        border-top: 1px solid var(--border-color);
+        background: rgba(0, 0, 0, 0.2);
         display: flex;
         gap: 0.5rem;
     }
-    .filter-btn {
-        background: rgba(255, 255, 255, 0.03);
+    .chat-input-area input {
+        flex: 1;
+        background: rgba(255, 255, 255, 0.05);
         border: 1px solid var(--border-color);
-        color: var(--text-secondary);
-        padding: 0.4rem 0.8rem;
-        border-radius: 6px;
-        font-size: 0.75rem;
-        font-weight: 700;
-        cursor: pointer;
+        color: white;
+        padding: 0.6rem 1rem;
+        border-radius: 8px;
+        font-family: inherit;
+        font-size: 0.875rem;
+        transition: border-color 0.2s;
     }
-    .filter-btn.active {
+    .chat-input-area input:focus {
+        outline: none;
+        border-color: var(--accent-green);
+    }
+    .send-btn {
         background: var(--accent-green);
         color: #000;
-        border-color: var(--accent-green);
+        border: none;
+        width: 38px;
+        height: 38px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition:
+            opacity 0.2s,
+            transform 0.1s;
+    }
+    .send-btn:hover {
+        opacity: 0.9;
+    }
+    .send-btn:active {
+        transform: scale(0.95);
+    }
+    .send-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        transform: none;
     }
 
-    .chart-container {
-        height: 350px;
+    /* ─── Video Player ─── */
+    .video-container {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 16 / 9;
+        overflow: hidden;
+        border-radius: 16px;
+    }
+
+    .stream-iframe {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        border: none;
+        border-radius: 16px;
+    }
+
+    /* Loading state */
+    .video-loading {
+        position: absolute;
+        inset: 0;
         display: flex;
         flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+        z-index: 2;
     }
-    .growth-chart {
-        flex-grow: 1;
-        width: 100%;
-        margin: 1rem 0;
-        overflow: visible;
-    }
-    .chart-axis-x {
-        display: flex;
-        justify-content: space-between;
-        padding: 0 10px;
+    .video-loading p {
         color: var(--text-secondary);
+        font-size: 0.875rem;
+        font-weight: 500;
+    }
+
+    .loading-spinner {
+        width: 36px;
+        height: 36px;
+        border: 3px solid rgba(255, 255, 255, 0.1);
+        border-top-color: var(--accent-green);
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin {
+        to {
+            transform: rotate(360deg);
+        }
+    }
+    .loading-spinner.small {
+        width: 20px;
+        height: 20px;
+        border-width: 2px;
+    }
+    .sidebar-loading {
+        display: flex;
+        justify-content: center;
+        padding: 1.5rem 0;
+    }
+
+    /* Error state */
+    .video-error {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 0.75rem;
+        z-index: 2;
+    }
+    .video-error p {
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+        font-weight: 500;
+        max-width: 300px;
+        text-align: center;
+    }
+    .retry-btn {
+        background: rgba(16, 185, 129, 0.1);
+        color: var(--accent-green);
+        border: 1px solid rgba(16, 185, 129, 0.25);
+        padding: 0.5rem 1.25rem;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 600;
+        font-family: inherit;
+        font-size: 0.8125rem;
+        transition: all 0.2s;
+    }
+    .retry-btn:hover {
+        background: var(--accent-green);
+        color: #0a0a0b;
+    }
+
+    /* ─── Lesson Info ─── */
+    .lesson-info {
+        padding: 1.25rem 0.25rem;
+    }
+
+    .lesson-header {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .lesson-badge {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
         font-size: 0.75rem;
         font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+    .lesson-number {
+        color: var(--accent-green);
+    }
+    .lesson-divider {
+        color: var(--text-secondary);
+        opacity: 0.4;
+    }
+    #lesson-duration {
+        color: var(--text-secondary);
     }
 
-    /* Asset Grid */
-    .asset-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 1.5rem;
+    .lesson-info h1 {
+        font-size: 1.5rem;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+        margin: 0;
+        line-height: 1.2;
     }
 
-    .stat-card {
-        padding: 2rem;
-        transition: transform 0.2s;
-        cursor: pointer;
+    .lesson-desc {
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+        line-height: 1.5;
+        margin: 0;
+        max-width: 700px;
     }
-    .stat-card:hover {
-        transform: translateY(-5px);
-        border-color: var(--accent-green);
+
+    /* ─── Sidebar ─── */
+    .course-sidebar {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
     }
-    .stat-card .icon {
-        font-size: 1.75rem;
-        display: block;
+
+    .sidebar-card {
+        padding: 1.25rem;
+        border-radius: 16px;
+    }
+
+    .sidebar-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
         margin-bottom: 1rem;
     }
-    .stat-card h3 {
-        font-size: 1rem;
-        color: var(--text-secondary);
+    .sidebar-header h2 {
+        font-size: 0.9375rem;
+        font-weight: 700;
         margin: 0;
     }
-    .stat-card .value {
-        font-size: 1.75rem;
-        font-weight: 800;
-        margin: 0.5rem 0;
-    }
-    .stat-card .change.positive {
+    .progress-badge {
+        font-size: 0.6875rem;
+        font-weight: 700;
         color: var(--accent-green);
-        font-size: 0.875rem;
+        background: rgba(16, 185, 129, 0.1);
+        padding: 0.25rem 0.625rem;
+        border-radius: 99px;
+        border: 1px solid rgba(16, 185, 129, 0.2);
+    }
+
+    /* Lesson list */
+    .lesson-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.375rem;
+    }
+
+    .lesson-item {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.75rem;
+        border-radius: 12px;
+        transition: all 0.2s;
+        cursor: pointer;
+    }
+    .lesson-item:hover {
+        background: rgba(255, 255, 255, 0.03);
+    }
+    .lesson-item.active {
+        background: rgba(16, 185, 129, 0.06);
+        border: 1px solid rgba(16, 185, 129, 0.15);
+    }
+
+    .lesson-item-status {
+        flex-shrink: 0;
+    }
+    .status-ring {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(255, 255, 255, 0.03);
+        border: 2px solid var(--border-color);
+        transition: all 0.25s;
+    }
+    .status-ring.playing {
+        border-color: var(--accent-green);
+        background: rgba(16, 185, 129, 0.1);
+        color: var(--accent-green);
+        box-shadow: 0 0 12px rgba(16, 185, 129, 0.15);
+    }
+
+    .lesson-item-info {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.125rem;
+    }
+    .lesson-item-label {
+        font-size: 0.625rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--text-secondary);
         font-weight: 600;
     }
-    .stat-card .change.negative {
-        color: var(--accent-red);
-        font-size: 0.875rem;
+    .lesson-item-title {
+        font-size: 0.8125rem;
         font-weight: 600;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .lesson-item-duration {
+        font-size: 0.75rem;
+        color: var(--text-secondary);
+        font-weight: 500;
+        font-variant-numeric: tabular-nums;
+        flex-shrink: 0;
+    }
+
+    /* Progress bar */
+    .sidebar-footer {
+        margin-top: 1rem;
+        padding-top: 1rem;
+        border-top: 1px solid var(--border-color);
+    }
+    .course-progress-bar {
+        height: 4px;
+        background: rgba(255, 255, 255, 0.06);
+        border-radius: 99px;
+        overflow: hidden;
+    }
+    .progress-fill {
+        height: 100%;
+        background: linear-gradient(90deg, var(--accent-green), #34d399);
+        border-radius: 99px;
+        transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .progress-text {
+        font-size: 0.6875rem;
+        color: var(--text-secondary);
+        margin-top: 0.5rem;
+        text-align: center;
+    }
+
+    /* Info card */
+    .info-card {
+        padding: 1rem 1.25rem;
+        border-radius: 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+    .info-row {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        font-size: 0.8125rem;
+        color: var(--text-secondary);
+        font-weight: 500;
+    }
+
+    /* ─── Responsive ─── */
+    @media (max-width: 900px) {
+        .course-layout {
+            grid-template-columns: 1fr;
+            padding: 1rem;
+        }
+        .course-sidebar {
+            order: -1;
+        }
+    }
+
+    @media (max-width: 640px) {
+        .dashboard-nav {
+            padding: 0.4rem 1rem;
+        }
+        .nav-container {
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        .user-menu {
+            gap: 0.75rem;
+        }
     }
 </style>
