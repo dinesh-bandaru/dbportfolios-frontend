@@ -1,0 +1,1150 @@
+---
+import Layout from "../layouts/Layout.astro";
+import BrandLogo from "../components/BrandLogo.astro";
+---
+
+<Layout title="Lesson 1 — The Invisible Tax | DB Portfolios">
+<div id="auth-checker" style="display:none;">
+
+<!-- ── NAV ── -->
+<nav class="lesson-nav">
+    <div class="nav-inner">
+        <a href="/dashboard" class="nav-back">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+            Dashboard
+        </a>
+        <a href="/dashboard" class="nav-logo"><BrandLogo width="120" height="20" color="#ffffff" /></a>
+        <div class="nav-progress-wrap">
+            <span id="slide-counter">1 / 5</span>
+            <div class="nav-prog-bar"><div class="nav-prog-fill" id="nav-fill"></div></div>
+        </div>
+    </div>
+</nav>
+
+<main class="stage">
+<div class="slides-wrap" id="slides-wrap">
+
+<!-- ════════════════════════════════════════════
+     SLIDE 1 — AI Time Machine
+     Hook: prices have outrun your savings.
+     ════════════════════════════════════════════ -->
+<div class="slide active" data-slide="0">
+    <div class="slide-inner">
+        <span class="slide-tag">The Invisible Tax</span>
+        <h1 class="slide-h1">The Cost of <span class="grad-red">Doing Nothing</span></h1>
+        <p class="slide-body">Think of something you wanted to buy a few years ago. Type it in — we'll look up what it actually cost then, and what it costs today.</p>
+
+        <div class="time-machine">
+            <h3 class="tm-title">🕰️ Financial Time Machine</h3>
+            <p class="tm-sub">Enter any item (e.g. "Honda Activa", "iPhone", "1 kg rice") and the year you remember wanting it.</p>
+            <div class="tm-input-row">
+                <div class="tm-input-group">
+                    <label for="tm-item-input">What did you want to buy?</label>
+                    <input type="text" id="tm-item-input" class="tm-text-input" placeholder="e.g. Royal Enfield Bullet 350" maxlength="80" autocomplete="off" spellcheck="false" />
+                </div>
+                <div class="tm-input-group tm-input-year">
+                    <label for="tm-year-input">Which year?</label>
+                    <input type="number" id="tm-year-input" class="tm-text-input" placeholder="e.g. 2015" min="2000" max="2023" value="2015" />
+                </div>
+                <button id="tm-lookup-btn" class="tm-btn" aria-label="Look up price">
+                    <span id="tm-btn-text">Look it up →</span>
+                </button>
+            </div>
+            <div id="tm-log-panel" class="tm-log-panel" style="display:none;">
+                <div class="tm-log-header">
+                    <span class="tm-log-dot"></span>
+                    <span class="tm-log-title">Researching…</span>
+                </div>
+                <div id="tm-log-lines" class="tm-log-lines"></div>
+            </div>
+            <div id="tm-results" class="tm-results" style="display:none;">
+                <div class="tm-card tm-price">
+                    <div class="tm-c-head">🛒 Then vs Now</div>
+                    <div class="tm-c-vs">
+                        <div>
+                            <small id="tm-year-label">Then</small>
+                            <div class="tm-item-name" id="tm-past-item"></div>
+                            <div class="tm-val" id="val-past-price">—</div>
+                        </div>
+                        <div class="tm-arrow">→</div>
+                        <div>
+                            <small>Now</small>
+                            <div class="tm-item-name" id="tm-now-item"></div>
+                            <div class="tm-val grad-red" id="val-now-price">—</div>
+                        </div>
+                    </div>
+                    <div class="tm-c-badge" id="badge-price"></div>
+                </div>
+                <div class="tm-card tm-insight">
+                    <div class="tm-c-head">💡 What this means</div>
+                    <p id="tm-insight-text" class="tm-insight-body"></p>
+                    <div class="tm-sources" id="tm-sources"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="callout callout-red" id="tm-conclusion">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            <p>Notice the gap? <strong>Prices grow much faster than salaries.</strong> Money sitting still is money slowly losing value — every single year.</p>
+        </div>
+    </div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     SLIDE 2 — Lifestyle Inflation Arc
+     Show how costs stack up faster than raises.
+     ════════════════════════════════════════════ -->
+<div class="slide lf-slide" data-slide="1">
+    <div class="lf-layout">
+        <div class="lf-left">
+            <span class="slide-tag">Lifestyle Inflation</span>
+            <h2 class="slide-h2" style="font-size:1.3rem;margin:0.25rem 0 0.5rem;">Life gets richer.<br><span class="grad-red">So do the bills.</span></h2>
+
+            <div class="lf-control-bar">
+                <div class="lf-curr-wrap" id="lf-curr-wrap">
+                    <button class="lf-curr-btn" id="lf-curr-btn" type="button" aria-haspopup="listbox" aria-expanded="false">
+                        <span class="lf-curr-flag" id="lf-curr-flag">🇮🇳</span>
+                        <span class="lf-curr-label" id="lf-curr-label">INR ₹</span>
+                        <svg class="lf-curr-chevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+                    </button>
+                    <ul class="lf-curr-menu" id="lf-curr-menu" role="listbox" aria-label="Currency">
+                        <li class="lf-curr-opt" data-value="₹"  data-flag="🇮🇳" data-label="INR ₹" role="option"><span class="lf-curr-opt-flag">🇮🇳</span><span class="lf-curr-opt-name">INR</span><span class="lf-curr-opt-sym">₹</span></li>
+                        <li class="lf-curr-opt" data-value="$"  data-flag="🇺🇸" data-label="USD $" role="option"><span class="lf-curr-opt-flag">🇺🇸</span><span class="lf-curr-opt-name">USD</span><span class="lf-curr-opt-sym">$</span></li>
+                        <li class="lf-curr-opt" data-value="€"  data-flag="🇪🇺" data-label="EUR €" role="option"><span class="lf-curr-opt-flag">🇪🇺</span><span class="lf-curr-opt-name">EUR</span><span class="lf-curr-opt-sym">€</span></li>
+                        <li class="lf-curr-opt" data-value="£"  data-flag="🇬🇧" data-label="GBP £" role="option"><span class="lf-curr-opt-flag">🇬🇧</span><span class="lf-curr-opt-name">GBP</span><span class="lf-curr-opt-sym">£</span></li>
+                        <li class="lf-curr-opt" data-value="A$" data-flag="🇦🇺" data-label="AUD A$" role="option"><span class="lf-curr-opt-flag">🇦🇺</span><span class="lf-curr-opt-name">AUD</span><span class="lf-curr-opt-sym">A$</span></li>
+                    </ul>
+                </div>
+                <div class="lf-control-divider"></div>
+                <input type="number" id="lf-salary" class="lf-salary-input" value="1200000" min="10000" />
+                <button class="lf-apply-btn" id="lf-apply-btn">Apply</button>
+            </div>
+
+            <div class="lf-scrubber-block">
+                <div class="lf-scrubber-header">
+                    <span class="lf-scrubber-title">Drag through your life</span>
+                    <span class="lf-year-badge" id="lf-year-badge">Today</span>
+                </div>
+                <input type="range" id="lf-scrubber" class="lf-scrubber" min="0" max="20" step="1" value="0" />
+                <div class="lf-scrubber-ends"><span>Today</span><span>Year 20</span></div>
+                <div class="lf-stage-pips">
+                    <span class="lf-pip" style="left:0%"  title="Single">🧍</span>
+                    <span class="lf-pip" style="left:20%" title="Relationship">💑</span>
+                    <span class="lf-pip" style="left:40%" title="Married">💍</span>
+                    <span class="lf-pip" style="left:60%" title="Young Family">👶</span>
+                    <span class="lf-pip" style="left:85%" title="Full Family">👨‍👩‍👧‍👦</span>
+                </div>
+            </div>
+
+            <div class="lf-stage-banner" id="lf-stage-banner">
+                <span class="lf-stage-icon" id="lf-stage-icon">🧍</span>
+                <div class="lf-stage-text">
+                    <span class="lf-stage-name" id="lf-stage-name">Single &amp; Starting Out</span>
+                    <span class="lf-stage-desc" id="lf-stage-desc">Freedom, few expenses. The world feels wide open.</span>
+                </div>
+            </div>
+
+            <div class="lf-stats-bar">
+                <div class="lf-stat">
+                    <span class="lf-stat-label">Annual Income</span>
+                    <span class="lf-stat-val lf-green" id="lf-salary-disp">—</span>
+                </div>
+                <div class="lf-stat">
+                    <span class="lf-stat-label">Monthly</span>
+                    <span class="lf-stat-val" id="lf-monthly-disp">—</span>
+                </div>
+                <div class="lf-stat">
+                    <span class="lf-stat-label">Out of reach</span>
+                    <span class="lf-stat-val lf-stat-red" id="lf-red-count">0</span>
+                </div>
+            </div>
+
+            <div class="callout callout-amber" id="lf-callout" style="display:none;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                <p id="lf-callout-text" style="font-size:0.78rem;margin:0;"></p>
+            </div>
+        </div>
+
+        <div class="lf-right">
+            <div class="lf-table-wrap">
+                <table class="lf-table">
+                    <thead>
+                        <tr>
+                            <th class="lf-th lf-th-item">Expense</th>
+                            <th class="lf-th lf-th-price">Cost / mo</th>
+                            <th class="lf-th lf-th-pct">% salary</th>
+                            <th class="lf-th lf-th-dot"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="lf-tbody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     SLIDE 3 — Interactive FD Waterfall
+     What the bank advertises vs what you keep.
+     Replaces old static version.
+     ════════════════════════════════════════════ -->
+<div class="slide" data-slide="2">
+    <div class="slide-inner">
+        <span class="slide-tag">The FD Illusion</span>
+        <h2 class="slide-h2">Where Does Your FD Return Go?</h2>
+        <p class="slide-sub">Two silent drains eat almost everything the bank advertises. Adjust the sliders to see your real situation.</p>
+
+        <div class="wf-interactive">
+            <div class="wf-controls">
+                <div class="wf-ctrl">
+                    <label class="wf-ctrl-label">FD Nominal Rate: <strong id="wf-fd-disp">7.0%</strong></label>
+                    <input type="range" id="wf-fd" class="generic-slider" min="3" max="12" step="0.5" value="7" />
+                </div>
+                <div class="wf-ctrl">
+                    <label class="wf-ctrl-label">Your Tax Rate: <strong id="wf-tax-disp">30%</strong></label>
+                    <input type="range" id="wf-tax" class="generic-slider" min="0" max="45" step="5" value="30" />
+                </div>
+                <div class="wf-ctrl">
+                    <label class="wf-ctrl-label">Inflation Rate: <strong id="wf-inf-disp">5.5%</strong></label>
+                    <input type="range" id="wf-inf" class="generic-slider" min="1" max="15" step="0.5" value="5.5" />
+                </div>
+            </div>
+
+            <div class="wf-bars">
+                <div class="wf-step">
+                    <div class="wf-step-label">Nominal FD Return</div>
+                    <div class="wf-bar-track">
+                        <div class="wf-bar wf-bar-blue" id="wfb-nominal" style="width:100%">
+                            <span class="wf-bar-val" id="wfv-nominal">7.0%</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="wf-drain-label" id="wf-drain-tax">↓ Tax (30%) eats −2.1%</div>
+                <div class="wf-step">
+                    <div class="wf-step-label">After-Tax Return</div>
+                    <div class="wf-bar-track">
+                        <div class="wf-bar wf-bar-amber" id="wfb-aftertax" style="width:70%">
+                            <span class="wf-bar-val" id="wfv-aftertax">4.9%</span>
+                        </div>
+                        <div class="wf-bar-lost wf-bar-lost-tax" id="wfb-lost-tax" style="width:30%"></div>
+                    </div>
+                </div>
+                <div class="wf-drain-label" id="wf-drain-inf">↓ Inflation (5.5%) burns −5.5%</div>
+                <div class="wf-step">
+                    <div class="wf-step-label">Real Return (Purchasing Power)</div>
+                    <div class="wf-bar-track">
+                        <div class="wf-bar wf-bar-real" id="wfb-real" style="width:13%">
+                            <span class="wf-bar-val" id="wfv-real">0.9%</span>
+                        </div>
+                        <div class="wf-bar-lost wf-bar-lost-inf" id="wfb-lost-inf" style="width:87%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="wf-verdict" id="wf-verdict">
+                <span class="wf-verdict-icon" id="wf-verdict-icon">⚠️</span>
+                <span id="wf-verdict-text">Your FD real return is <strong id="wf-real-hl">0.9%</strong> — barely above zero. Inflation is winning.</span>
+            </div>
+        </div>
+
+        <div class="two-col" style="margin-top:0.25rem;">
+            <div class="info-panel panel-red">
+                <h3>❌ The Treadmill</h3>
+                <p>You lock up capital for years, pay tax on every rupee of interest, then watch inflation consume the rest. Maximum effort. Minimal progress.</p>
+            </div>
+            <div class="info-panel panel-green">
+                <h3>✅ Real Safety</h3>
+                <p>"Safe" means preserving purchasing power — not just avoiding a nominal loss. An FD that loses to inflation is losing real money, silently.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     SLIDE 4 — Compounding
+     The antidote: show what happens when you
+     stop feeding the treadmill.
+     ════════════════════════════════════════════ -->
+<div class="slide" data-slide="3">
+    <div class="slide-inner">
+        <span class="slide-tag">The Escape Hatch</span>
+        <h2 class="slide-h2">The Power of Compounding</h2>
+        <p class="slide-sub">The antidote to the invisible tax. Reinvesting returns turns time into your greatest financial ally.</p>
+
+        <div class="comp-visual" id="comp-visual"></div>
+
+        <div class="calc-wrap">
+            <div class="calc-row">
+                <label for="comp-years">Years Invested</label>
+                <div class="slider-row">
+                    <input type="range" id="comp-years" min="1" max="30" step="1" value="10" />
+                    <span id="comp-years-display" class="val-display">10 yrs</span>
+                </div>
+            </div>
+            <div class="calc-row">
+                <label for="comp-rate">Annual Return (%)</label>
+                <div class="slider-row">
+                    <input type="range" id="comp-rate" min="6" max="18" step="0.5" value="13.5" />
+                    <span id="comp-rate-display" class="val-display">13.5%</span>
+                </div>
+            </div>
+            <div class="calc-result">
+                <div class="result-card result-good">
+                    <span class="result-label" id="comp-base-label">100,000 grows to</span>
+                    <span class="result-val" id="comp-result">—</span>
+                </div>
+                <div class="result-card result-good">
+                    <span class="result-label">Total gain</span>
+                    <span class="result-val" id="comp-gain">—</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="hen-metaphor">
+            <p class="meta-title">🐔 The Hen Metaphor</p>
+            <p>You start with one hen. In year one it lays one egg. Instead of eating it, you hatch it into another hen — now <strong>two hens work for you.</strong> Each year both hens lay eggs, and you hatch every single one. Growth cascades exponentially.</p>
+            <p>Eat every egg: 5 hens after 5 years. Reinvest every egg: <strong>11 hens.</strong> Same time. Completely different outcome.</p>
+        </div>
+    </div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     SLIDE 5 — Pay Yourself First
+     The one behavioural rule that makes it real.
+     ════════════════════════════════════════════ -->
+<div class="slide" data-slide="4">
+    <div class="slide-inner">
+        <span class="slide-tag">Your Action Plan</span>
+        <h2 class="slide-h2">Pay Yourself First</h2>
+        <p class="slide-sub">One habit separates people who build wealth from people who don't.</p>
+
+        <div class="two-paths">
+            <div class="path-card path-bad">
+                <div class="path-header"><span class="path-emoji">❌</span><h3>Common Trap</h3></div>
+                <div class="path-flow">
+                    <div class="pf-step">Earn income</div>
+                    <div class="pf-arrow">↓</div>
+                    <div class="pf-step pf-highlight-red">Pay all lifestyle expenses first</div>
+                    <div class="pf-arrow">↓</div>
+                    <div class="pf-step pf-highlight-red">Save whatever is left — usually nothing</div>
+                </div>
+                <p class="path-result bad-result">No consistency → no compounding → no wealth</p>
+            </div>
+            <div class="path-card path-good">
+                <div class="path-header"><span class="path-emoji">✅</span><h3>Wealth Path</h3></div>
+                <div class="path-flow">
+                    <div class="pf-step">Earn income</div>
+                    <div class="pf-arrow">↓</div>
+                    <div class="pf-step pf-highlight-green">Invest first — lock in returns immediately</div>
+                    <div class="pf-arrow">↓</div>
+                    <div class="pf-step pf-highlight-green">Live on what remains</div>
+                </div>
+                <p class="path-result good-result">Consistent compounding → growing secondary income → independence</p>
+            </div>
+        </div>
+
+        <div class="callout callout-green">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            <p>How much you start with matters far less than <strong>starting at all.</strong> The invisible tax compounds against you every year you wait — so does compounding work <em>for</em> you, the earlier you begin.</p>
+        </div>
+
+        <div id="complete-banner" class="complete-banner" style="display:none;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            Lesson 1 Complete — you understand the invisible tax.
+        </div>
+    </div>
+</div>
+
+</div><!-- /slides-wrap -->
+
+<button class="nav-arrow prev" id="btn-prev" aria-label="Previous"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg></button>
+<button class="nav-arrow next" id="btn-next" aria-label="Next"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></button>
+
+<div class="dots" id="dots">
+    <span class="dot active" data-i="0"></span>
+    <span class="dot" data-i="1"></span>
+    <span class="dot" data-i="2"></span>
+    <span class="dot" data-i="3"></span>
+    <span class="dot" data-i="4"></span>
+</div>
+</main>
+</div><!-- /auth-checker -->
+
+<script>
+const token = localStorage.getItem("auth_token");
+if (!token) { window.location.href = "/login"; }
+else { (document.getElementById("auth-checker") as HTMLElement).style.display = "block"; }
+
+declare global { interface Window { __GEO__: { country: string; currency: string; symbol: string; locale: string; timezone: string; city: string } } }
+const GEO = window.__GEO__ ?? { country: "IN", currency: "INR", symbol: "₹", locale: "en-IN", timezone: "Asia/Kolkata", city: "Mumbai" };
+
+/* ── Slide navigation ─────────────────────────────────────────────── */
+const TOTAL = 5;
+let current = 0;
+const slides = document.querySelectorAll<HTMLElement>(".slide");
+const dots   = document.querySelectorAll<HTMLElement>(".dot");
+const counter = document.getElementById("slide-counter")!;
+const navFill = document.getElementById("nav-fill")!;
+
+function goTo(idx: number) {
+    slides[current].classList.remove("active");
+    dots[current].classList.remove("active");
+    current = Math.max(0, Math.min(idx, TOTAL - 1));
+    slides[current].classList.add("active");
+    dots[current].classList.add("active");
+    counter.textContent = `${current + 1} / ${TOTAL}`;
+    navFill.style.width = `${((current + 1) / TOTAL) * 100}%`;
+    (document.getElementById("btn-prev") as HTMLButtonElement).disabled = current === 0;
+    if (current === 1) { slides[1].scrollTop = 0; if (lfRenderedIds.size === 0) lfBuildGrid(); }
+    if (current === 2) updateWaterfall();
+    if (current === 3) { updateComp(); renderHens(); }
+    if (current === TOTAL - 1) {
+        localStorage.setItem("lesson_1_done", "true");
+        const banner = document.getElementById("complete-banner");
+        if (banner) banner.style.display = "flex";
+        const btn = document.getElementById("btn-next") as HTMLButtonElement;
+        btn.title = "Next lesson";
+        btn.onclick = () => { window.location.href = "/lesson-2"; };
+    }
+}
+
+document.getElementById("btn-prev")?.addEventListener("click", () => goTo(current - 1));
+document.getElementById("btn-next")?.addEventListener("click", () => { if (current < TOTAL - 1) goTo(current + 1); });
+dots.forEach(d => d.addEventListener("click", () => goTo(Number(d.dataset.i))));
+document.addEventListener("keydown", e => {
+    if (e.key === "ArrowRight" || e.key === "ArrowDown") goTo(current + 1);
+    if (e.key === "ArrowLeft"  || e.key === "ArrowUp")   goTo(current - 1);
+});
+
+/* ── Currency formatter ────────────────────────────────────────────── */
+function fmt(n: number, sym?: string, country?: string): string {
+    const s = sym ?? GEO.symbol;
+    const c = country ?? GEO.country;
+    const a = Math.round(Math.abs(n));
+    if (c === "IN") {
+        if (a >= 10000000) return s + (a / 10000000).toFixed(1) + "Cr";
+        if (a >= 100000)   return s + (a / 100000).toFixed(1) + "L";
+        if (a >= 1000)     return s + (a / 1000).toFixed(0) + "K";
+        return s + a.toLocaleString("en-IN");
+    }
+    if (a >= 1000000) return s + (a / 1000000).toFixed(1) + "M";
+    if (a >= 1000)    return s + (a / 1000).toFixed(0) + "K";
+    return s + a.toLocaleString(GEO.locale);
+}
+
+/* ══════════════════════════════════════════════════
+   SLIDE 1 — AI Financial Time Machine
+   ══════════════════════════════════════════════════ */
+const API_BASE = import.meta.env.DEV
+    ? "http://localhost:8787"
+    : "https://dbportfolios-backend.blr-bull.workers.dev";
+
+const itemInput    = document.getElementById("tm-item-input")  as HTMLInputElement;
+const yearInput    = document.getElementById("tm-year-input")  as HTMLInputElement;
+const lookupBtn    = document.getElementById("tm-lookup-btn")  as HTMLButtonElement;
+const btnText      = document.getElementById("tm-btn-text")!;
+const logPanel     = document.getElementById("tm-log-panel")!;
+const logLines     = document.getElementById("tm-log-lines")!;
+const resultsEl    = document.getElementById("tm-results")!;
+const yearLabel    = document.getElementById("tm-year-label")!;
+const pastItemEl   = document.getElementById("tm-past-item")!;
+const nowItemEl    = document.getElementById("tm-now-item")!;
+const valPastP     = document.getElementById("val-past-price")!;
+const valNowP      = document.getElementById("val-now-price")!;
+const badgeP       = document.getElementById("badge-price")!;
+const insightEl    = document.getElementById("tm-insight-text")!;
+const sourcesEl    = document.getElementById("tm-sources")!;
+const conclusionEl = document.getElementById("tm-conclusion")!;
+
+function addLog(msg: string) {
+    const line = document.createElement("div");
+    line.className = "tm-log-line";
+    line.textContent = "› " + msg;
+    logLines.appendChild(line);
+    logLines.scrollTop = logLines.scrollHeight;
+}
+function fmtPct(past: number, now: number): string {
+    const pct = Math.round(((now - past) / past) * 100);
+    return (pct >= 0 ? "+" : "") + pct + "%";
+}
+
+lookupBtn.addEventListener("click", async () => {
+    const item = itemInput.value.trim();
+    const year = yearInput.value.trim();
+    if (!item) { itemInput.focus(); return; }
+    if (!year || isNaN(Number(year))) { yearInput.focus(); return; }
+    btnText.textContent = "Researching…";
+    lookupBtn.disabled = true;
+    logPanel.style.display = "block";
+    resultsEl.style.display = "none";
+    logLines.innerHTML = "";
+    addLog(`Starting research for "${item}" (${year})…`);
+    const tok = localStorage.getItem("auth_token") || "";
+    try {
+        const res = await fetch(`${API_BASE}/api/protected/course/price-lookup`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json", Authorization: `Bearer ${tok}` },
+            body: JSON.stringify({ item, year, country: GEO.country, currency: GEO.currency, city: GEO.city, timezone: GEO.timezone }),
+        });
+        if (!res.ok || !res.body) { addLog(`Error: ${res.status} ${res.statusText}`); return; }
+        const reader = res.body.getReader();
+        const decoder = new TextDecoder();
+        let buffer = ""; let streamDone = false;
+        while (!streamDone) {
+            const { done, value } = await reader.read();
+            if (done) break;
+            buffer += decoder.decode(value, { stream: true });
+            const lines = buffer.split("\n");
+            buffer = lines.pop() ?? "";
+            for (const line of lines) {
+                if (!line.startsWith("data:")) continue;
+                const raw = line.slice(5).trim();
+                if (raw === "[DONE]") { streamDone = true; break; }
+                let evt: any; try { evt = JSON.parse(raw); } catch { continue; }
+                if (evt.type === "log") { addLog(evt.message); }
+                else if (evt.type === "result") {
+                    yearLabel.textContent  = evt.year ?? year;
+                    pastItemEl.textContent = evt.pastItem ?? item;
+                    nowItemEl.textContent  = evt.nowItem ?? "Today's equivalent";
+                    valPastP.textContent   = evt.pastPriceFormatted ?? `${GEO.symbol}${Number(evt.pastPrice).toLocaleString(GEO.locale)}`;
+                    valNowP.textContent    = evt.nowPriceFormatted  ?? `${GEO.symbol}${Number(evt.nowPrice).toLocaleString(GEO.locale)}`;
+                    badgeP.textContent     = fmtPct(Number(evt.pastPrice), Number(evt.nowPrice));
+                    insightEl.textContent  = evt.insight ?? "";
+                    sourcesEl.innerHTML = "";
+                    const links: { url: string; title: string }[] = evt.sourceLinks ?? [];
+                    if (links.length > 0) {
+                        const lbl = document.createElement("span"); lbl.className = "tm-sources-label"; lbl.textContent = "Sources:"; sourcesEl.appendChild(lbl);
+                        links.forEach(s => { const a = document.createElement("a"); a.href = s.url; a.target = "_blank"; a.rel = "noopener noreferrer"; a.className = "tm-source-link"; a.textContent = s.title; sourcesEl.appendChild(a); });
+                    } else if (evt.source) { const lbl = document.createElement("span"); lbl.className = "tm-sources-label"; lbl.textContent = `Source: ${evt.source}`; sourcesEl.appendChild(lbl); }
+                    resultsEl.style.display = "grid";
+                    const pct = Math.round(((Number(evt.nowPrice) - Number(evt.pastPrice)) / Number(evt.pastPrice)) * 100);
+                    conclusionEl.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><p>The <strong>${evt.pastItem ?? item}</strong> in ${evt.year ?? year} cost ${evt.pastPriceFormatted}. Today's equivalent costs ${evt.nowPriceFormatted} — a <strong>${pct}% jump</strong>. Your idle savings didn't come close.</p>`;
+                } else if (evt.type === "error") { addLog("⚠ " + evt.message); }
+            }
+        }
+    } catch (err: any) { addLog("Network error: " + (err?.message ?? "unknown")); }
+    finally { btnText.textContent = "Look it up →"; lookupBtn.disabled = false; }
+});
+itemInput.addEventListener("keydown", e => { if (e.key === "Enter") lookupBtn.click(); });
+yearInput.addEventListener("keydown", e => { if (e.key === "Enter") lookupBtn.click(); });
+
+/* ══════════════════════════════════════════════════
+   SLIDE 2 — Lifestyle Inflation
+   ══════════════════════════════════════════════════ */
+function bestCurrencyOption(symbol: string): string {
+    const opts = ["₹","$","€","£","A$"];
+    if (opts.includes(symbol)) return symbol;
+    if (GEO.currency === "EUR") return "€";
+    if (["CAD","NZD","SGD","HKD","USD","MXN","ARS","CLP","COP"].includes(GEO.currency)) return "$";
+    if (GEO.currency === "GBP") return "£";
+    if (GEO.currency === "AUD") return "A$";
+    return "$";
+}
+
+function lfSetCurrency(value: string) {
+    const opt = document.querySelector(`.lf-curr-opt[data-value="${CSS.escape(value)}"]`) as HTMLElement | null;
+    if (!opt) return;
+    const flagEl  = document.getElementById("lf-curr-flag");
+    const labelEl = document.getElementById("lf-curr-label");
+    if (flagEl)  flagEl.textContent  = opt.dataset.flag  ?? "";
+    if (labelEl) labelEl.textContent = opt.dataset.label ?? value;
+    document.getElementById("lf-curr-btn")?.setAttribute("aria-expanded","false");
+    document.getElementById("lf-curr-menu")?.classList.remove("lf-curr-menu--open");
+    document.querySelectorAll(".lf-curr-opt").forEach(el => el.classList.remove("lf-curr-opt--active"));
+    opt.classList.add("lf-curr-opt--active");
+}
+document.getElementById("lf-curr-btn")?.addEventListener("click", () => {
+    const menu = document.getElementById("lf-curr-menu");
+    const btn  = document.getElementById("lf-curr-btn");
+    const open = menu?.classList.toggle("lf-curr-menu--open");
+    btn?.setAttribute("aria-expanded", String(open));
+});
+document.querySelectorAll(".lf-curr-opt").forEach(opt => {
+    opt.addEventListener("click", () => {
+        lfSetCurrency((opt as HTMLElement).dataset.value ?? "$");
+        document.getElementById("lf-curr-menu")?.classList.remove("lf-curr-menu--open");
+    });
+});
+document.addEventListener("click", e => {
+    const wrap = document.getElementById("lf-curr-wrap");
+    if (wrap && !wrap.contains(e.target as Node)) {
+        document.getElementById("lf-curr-menu")?.classList.remove("lf-curr-menu--open");
+        document.getElementById("lf-curr-btn")?.setAttribute("aria-expanded","false");
+    }
+});
+lfSetCurrency(bestCurrencyOption(GEO.symbol));
+
+interface LfItem { id:string; emoji:string; label:string; inflRate:number; prices:Record<string,number>; appearsAt:number; dropsAt?:number; dropNote?:string; }
+interface LifeStage { from:number; icon:string; name:string; desc:string; color:string; }
+
+const LF_STAGES: LifeStage[] = [
+    { from:0,  icon:"🧍",     name:"Single & Starting Out",   desc:"Freedom, few expenses. Life feels wide open.",                      color:"var(--accent-green)" },
+    { from:4,  icon:"💑",     name:"In a Relationship",        desc:"Shared experiences — and shared spending.",                          color:"#60a5fa" },
+    { from:7,  icon:"💍",     name:"Newly Married",            desc:"A shared home, doubled groceries, bigger plans.",                    color:"#a78bfa" },
+    { from:10, icon:"👶",     name:"Young Family",             desc:"A child changes everything — especially the bills.",                 color:"#fb923c" },
+    { from:14, icon:"👨‍👩‍👧‍👦", name:"Full Family Obligations", desc:"School fees, parents' health, home loan. No room left to breathe.", color:"#ef4444" },
+];
+
+const LF_ITEMS: LfItem[] = [
+    { id:"coffee",    emoji:"☕",  label:"Morning Coffee",         inflRate:0.065, appearsAt:0,  prices:{"₹":160,   "$":6,    "€":4,    "£":3,    "A$":7   }},
+    { id:"stream",    emoji:"📺",  label:"Streaming",              inflRate:0.08,  appearsAt:0,  prices:{"₹":649,   "$":23,   "€":14,   "£":11,   "A$":23  }},
+    { id:"gym",       emoji:"🏋️", label:"Gym Membership",          inflRate:0.075, appearsAt:0,  dropsAt:10, dropNote:"No time for the gym once the baby arrives.", prices:{"₹":2000,  "$":55,   "€":45,   "£":38,   "A$":70  }},
+    { id:"lunch",     emoji:"🍱",  label:"Eating Out (lunch)",     inflRate:0.08,  appearsAt:0,  prices:{"₹":250,   "$":18,   "€":14,   "£":12,   "A$":22  }},
+    { id:"nightout",  emoji:"🍻",  label:"Nights Out",             inflRate:0.09,  appearsAt:0,  dropsAt:7,  dropNote:"Late nights fade once married life sets in.",  prices:{"₹":3000,  "$":70,   "€":55,   "£":48,   "A$":90  }},
+    { id:"datenight", emoji:"🍷",  label:"Date Nights",            inflRate:0.08,  appearsAt:4,  prices:{"₹":3500,  "$":80,   "€":65,   "£":55,   "A$":110 }},
+    { id:"solotrip",  emoji:"✈️",  label:"Solo Vacation (saving)", inflRate:0.09,  appearsAt:4,  dropsAt:10, dropNote:"Solo trips end. Family holidays cost 2–3× more.", prices:{"₹":3000,  "$":180,  "€":140,  "£":120,  "A$":230 }},
+    { id:"phonemi",   emoji:"📱",  label:"Flagship Phone EMI",     inflRate:0.075, appearsAt:4,  prices:{"₹":4200,  "$":50,   "€":55,   "£":48,   "A$":80  }},
+    { id:"rent",      emoji:"🏠",  label:"Monthly Rent",           inflRate:0.10,  appearsAt:7,  dropsAt:14, dropNote:"You buy a home. Rent stops — but the EMI begins.", prices:{"₹":20000, "$":1700, "€":1300, "£":1200, "A$":2200}},
+    { id:"groceries", emoji:"🛒",  label:"Groceries",              inflRate:0.07,  appearsAt:7,  prices:{"₹":6500,  "$":350,  "€":300,  "£":260,  "A$":480 }},
+    { id:"utilities", emoji:"⚡",  label:"Utility Bills",          inflRate:0.085, appearsAt:7,  prices:{"₹":4000,  "$":180,  "€":150,  "£":130,  "A$":260 }},
+    { id:"car",       emoji:"🚗",  label:"Car Loan EMI",           inflRate:0.085, appearsAt:7,  prices:{"₹":13500, "$":700,  "€":520,  "£":460,  "A$":900 }},
+    { id:"childcare", emoji:"👶",  label:"Childcare / Baby",       inflRate:0.10,  appearsAt:10, prices:{"₹":8000,  "$":1300, "€":700,  "£":600,  "A$":1500}},
+    { id:"health",    emoji:"💊",  label:"Health Insurance",       inflRate:0.12,  appearsAt:10, prices:{"₹":1800,  "$":600,  "€":180,  "£":150,  "A$":250 }},
+    { id:"familytrip",emoji:"🏖️", label:"Family Vacation (saving)",inflRate:0.10,  appearsAt:10, prices:{"₹":6000,  "$":300,  "€":240,  "£":210,  "A$":400 }},
+    { id:"school",    emoji:"🎓",  label:"School Fees",            inflRate:0.10,  appearsAt:14, prices:{"₹":12000, "$":1000, "€":600,  "£":500,  "A$":1200}},
+    { id:"parents",   emoji:"🧓",  label:"Parents' Medical",       inflRate:0.12,  appearsAt:14, prices:{"₹":5000,  "$":300,  "€":150,  "£":130,  "A$":250 }},
+    { id:"homeloan",  emoji:"🏡",  label:"Home Loan EMI",          inflRate:0.00,  appearsAt:14, prices:{"₹":43000, "$":2200, "€":1300, "£":1150, "A$":2800}},
+];
+
+const LF_SALARY_GROWTH = 0.07;
+const LF_YEARS = 20;
+const SALARY_DEFAULTS: Record<string,number> = { "₹":1200000, "$":65000, "€":40000, "£":35000, "A$":80000 };
+
+let lfCurrency    = bestCurrencyOption(GEO.symbol);
+let lfBaseSalary  = SALARY_DEFAULTS[lfCurrency] ?? 65000;
+let lfCurrentYear = 0;
+const lfRenderedIds = new Set<string>();
+
+function lfFmt(n: number, sym: string): string {
+    const a = Math.abs(n);
+    if (sym === "₹") {
+        const r = Math.round(a);
+        if (r >= 10000000) return sym + (a/10000000).toFixed(1) + "Cr";
+        if (r >= 100000)   return sym + (a/100000).toFixed(1) + "L";
+        if (r >= 1000)     return sym + (a/1000).toFixed(0) + "K";
+        return sym + r.toLocaleString("en-IN");
+    }
+    if (a >= 1000000) return sym + (a/1000000).toFixed(1) + "M";
+    if (a >= 10000)   return sym + (a/1000).toFixed(0) + "K";
+    if (a >= 1000)    return sym + (a/1000).toFixed(1) + "K";
+    return sym + Math.round(a);
+}
+function lfBasePrice(item: LfItem): number { return item.prices[lfCurrency] ?? item.prices["$"] ?? 0; }
+function lfAffordability(price: number, monthly: number): "green"|"amber"|"red" {
+    const r = price / monthly;
+    if (r < 0.15) return "green";
+    if (r < 0.40) return "amber";
+    return "red";
+}
+function lfStageFor(yr: number): LifeStage {
+    let s = LF_STAGES[0];
+    for (const ls of LF_STAGES) { if (yr >= ls.from) s = ls; }
+    return s;
+}
+function lfUpdateStageBanner(yr: number) {
+    const stage = lfStageFor(yr);
+    const icon  = document.getElementById("lf-stage-icon");
+    const name  = document.getElementById("lf-stage-name");
+    const desc  = document.getElementById("lf-stage-desc");
+    const banner= document.getElementById("lf-stage-banner");
+    if (icon)   icon.textContent  = stage.icon;
+    if (name)   name.textContent  = stage.name;
+    if (desc)   desc.textContent  = stage.desc;
+    if (banner) banner.style.borderColor = stage.color;
+}
+function lfSyncScrubber() {
+    const s = document.getElementById("lf-scrubber") as HTMLInputElement;
+    if (!s) return;
+    const yr  = Number(s.value);
+    const pct = (yr / LF_YEARS) * 100;
+    s.style.background = `linear-gradient(to right, var(--accent-green) ${pct}%, rgba(255,255,255,0.1) ${pct}%)`;
+    const badge = document.getElementById("lf-year-badge");
+    if (badge) badge.textContent = yr === 0 ? "Today" : `Year ${yr}`;
+    lfRenderYear(yr);
+}
+function lfAddRow(item: LfItem, monthly: number) {
+    const tbody = document.getElementById("lf-tbody");
+    if (!tbody || lfRenderedIds.has(item.id)) return;
+    lfRenderedIds.add(item.id);
+    const price0 = lfBasePrice(item);
+    const color0 = lfAffordability(price0, monthly);
+    const pct0   = Math.round((price0 / monthly) * 100);
+    const tr     = document.createElement("tr");
+    tr.id        = `lf-row-${item.id}`;
+    tr.className = "lf-row lf-row-new";
+    tr.innerHTML =
+        `<td class="lf-td lf-td-item">${item.emoji} ${item.label}</td>` +
+        `<td class="lf-td lf-td-price" id="lf-price-${item.id}">${lfFmt(price0, lfCurrency)}</td>` +
+        `<td class="lf-td lf-td-pct"   id="lf-pct-${item.id}">${pct0}%</td>` +
+        `<td class="lf-td lf-td-dot"><span class="lf-status lf-status--${color0}" id="lf-dot-${item.id}"></span></td>`;
+    tbody.appendChild(tr);
+    requestAnimationFrame(() => { tr.classList.remove("lf-row-new"); });
+}
+function lfDropRow(item: LfItem) {
+    const tr = document.getElementById(`lf-row-${item.id}`);
+    if (!tr || tr.classList.contains("lf-row-dropped")) return;
+    tr.classList.add("lf-row-dropped");
+    if (item.dropNote) {
+        const cell = tr.querySelector(".lf-td-item") as HTMLElement | null;
+        if (cell && !cell.querySelector(".lf-drop-note")) {
+            const note = document.createElement("span");
+            note.className = "lf-drop-note";
+            note.textContent = ` — ${item.dropNote}`;
+            cell.appendChild(note);
+        }
+    }
+}
+function lfRestoreRow(item: LfItem) {
+    const tr = document.getElementById(`lf-row-${item.id}`);
+    if (!tr) return;
+    tr.classList.remove("lf-row-dropped");
+    tr.querySelector(".lf-drop-note")?.remove();
+}
+function lfRemoveRow(item: LfItem) {
+    document.getElementById(`lf-row-${item.id}`)?.remove();
+    lfRenderedIds.delete(item.id);
+}
+function lfRenderYear(yr: number) {
+    lfCurrentYear = yr;
+    const salary  = lfBaseSalary * Math.pow(1 + LF_SALARY_GROWTH, yr);
+    const monthly = salary / 12;
+    const sd = document.getElementById("lf-salary-disp");
+    const md = document.getElementById("lf-monthly-disp");
+    if (sd) sd.textContent = lfFmt(salary, lfCurrency) + " / yr";
+    if (md) md.textContent = lfFmt(monthly, lfCurrency) + " / mo";
+    lfUpdateStageBanner(yr);
+    for (const item of LF_ITEMS) {
+        if (yr >= item.appearsAt) lfAddRow(item, monthly); else lfRemoveRow(item);
+        if (item.dropsAt !== undefined) { if (yr >= item.dropsAt) lfDropRow(item); else lfRestoreRow(item); }
+    }
+    let redCount = 0;
+    const active = LF_ITEMS.filter(i => yr >= i.appearsAt);
+    for (const item of active) {
+        const isDropped = item.dropsAt !== undefined && yr >= item.dropsAt;
+        const price     = lfBasePrice(item) * Math.pow(1 + item.inflRate, yr);
+        const color     = isDropped ? "dropped" : lfAffordability(price, monthly);
+        const pct       = Math.round((price / monthly) * 100);
+        const priceEl   = document.getElementById(`lf-price-${item.id}`);
+        const pctEl     = document.getElementById(`lf-pct-${item.id}`);
+        const dotEl     = document.getElementById(`lf-dot-${item.id}`);
+        if (priceEl) priceEl.textContent = lfFmt(price, lfCurrency);
+        if (pctEl)   pctEl.textContent   = isDropped ? "—" : pct + "%";
+        if (dotEl)   dotEl.className     = `lf-status lf-status--${color}`;
+        if (!isDropped && color === "red") redCount++;
+    }
+    const rc = document.getElementById("lf-red-count");
+    if (rc) { rc.textContent = String(redCount); rc.className = "lf-stat-val " + (redCount >= 4 ? "lf-stat-red" : redCount >= 2 ? "lf-stat-amber" : "lf-green"); }
+
+    const amberCount = active.filter(i => { if (i.dropsAt !== undefined && yr >= i.dropsAt) return false; const p = lfBasePrice(i) * Math.pow(1 + i.inflRate, yr); return lfAffordability(p, monthly) === "amber"; }).length;
+    const redItems   = active.filter(i => { if (i.dropsAt !== undefined && yr >= i.dropsAt) return false; const p = lfBasePrice(i) * Math.pow(1 + i.inflRate, yr); return lfAffordability(p, monthly) === "red"; });
+    const callout    = document.getElementById("lf-callout") as HTMLElement | null;
+    const calloutTxt = document.getElementById("lf-callout-text");
+    if (callout && calloutTxt) {
+        if (yr >= 14 && redCount >= 3) {
+            calloutTxt.innerHTML = `You stopped renting and bought a home — but the EMI is bigger than rent ever was. School fees, parents' medical, and the loan landed together. You're earning ${Math.round(LF_SALARY_GROWTH * 100)}% more every year, but <strong>${redCount} expenses are now genuinely out of reach</strong>.`;
+            callout.className = "callout callout-red"; callout.style.display = "flex";
+        } else if (yr >= 14) {
+            calloutTxt.innerHTML = `You've bought a home — rent is gone, but the <strong>home loan EMI is larger</strong>. School fees and parents' care arrive at the same time. The obligations don't stop stacking.`;
+            callout.className = "callout callout-amber"; callout.style.display = "flex";
+        } else if (yr >= 10 && redCount >= 1) {
+            calloutTxt.innerHTML = `A child changed the numbers completely. The gym and solo trips are gone — childcare, health insurance, and family savings took their place. Even with your raises, <strong>something has slipped into the red.</strong>`;
+            callout.className = "callout callout-red"; callout.style.display = "flex";
+        } else if (yr >= 10) {
+            calloutTxt.innerHTML = `A baby means expenses you never budgeted for. Childcare alone can match your rent. <strong>Keep scrubbing to see what's coming.</strong>`;
+            callout.className = "callout callout-amber"; callout.style.display = "flex";
+        } else if (yr >= 7 && amberCount >= 2) {
+            calloutTxt.innerHTML = `Rent, groceries, utilities, a car — none of this was in your single-life budget. <strong>${amberCount} expenses now take a noticeable chunk of salary.</strong> You're not struggling yet. But saving is harder than it should be.`;
+            callout.className = "callout callout-amber"; callout.style.display = "flex";
+        } else if (yr >= 4 && amberCount >= 1) {
+            calloutTxt.innerHTML = `Date nights, saving for a trip — <strong>spending grows naturally with life.</strong> Nothing alarming yet. Keep going.`;
+            callout.className = "callout callout-amber"; callout.style.display = "flex";
+        } else { callout.style.display = "none"; }
+    }
+}
+function lfBuildGrid() {
+    const tbody = document.getElementById("lf-tbody");
+    if (!tbody) return;
+    tbody.innerHTML = "";
+    lfRenderedIds.clear();
+    lfSyncScrubber();
+}
+document.getElementById("lf-scrubber")?.addEventListener("input", lfSyncScrubber);
+document.getElementById("lf-apply-btn")?.addEventListener("click", () => {
+    const salInput  = document.getElementById("lf-salary") as HTMLInputElement;
+    const activeOpt = document.querySelector(".lf-curr-opt--active") as HTMLElement | null;
+    const newCurr   = activeOpt?.dataset.value ?? lfCurrency;
+    if (newCurr !== lfCurrency) {
+        lfCurrency   = newCurr;
+        lfBaseSalary = SALARY_DEFAULTS[lfCurrency] ?? 65000;
+        salInput.value = String(lfBaseSalary);
+    } else {
+        const val = Number(salInput.value);
+        if (!isNaN(val) && val > 0) lfBaseSalary = val;
+    }
+    (document.getElementById("lf-scrubber") as HTMLInputElement).value = "0";
+    lfBuildGrid();
+});
+(document.getElementById("lf-salary") as HTMLInputElement)?.addEventListener("keydown", e => { if (e.key === "Enter") document.getElementById("lf-apply-btn")?.click(); });
+// Init salary input to geo default
+const lfSalaryInput = document.getElementById("lf-salary") as HTMLInputElement | null;
+if (lfSalaryInput) lfSalaryInput.value = String(lfBaseSalary);
+
+/* ══════════════════════════════════════════════════
+   SLIDE 3 — Interactive FD Waterfall
+   ══════════════════════════════════════════════════ */
+function updateWaterfall() {
+    const wfFd  = Number((document.getElementById("wf-fd")  as HTMLInputElement).value);
+    const wfTax = Number((document.getElementById("wf-tax") as HTMLInputElement).value);
+    const wfInf = Number((document.getElementById("wf-inf") as HTMLInputElement).value);
+
+    const set = (id: string, v: string) => { const el = document.getElementById(id); if (el) el.textContent = v; };
+    set("wf-fd-disp",  wfFd  + "%");
+    set("wf-tax-disp", wfTax + "%");
+    set("wf-inf-disp", wfInf + "%");
+
+    const aftertax = wfFd * (1 - wfTax / 100);
+    const real     = aftertax - wfInf;
+    const taxDrain = wfFd - aftertax;
+
+    const aftertaxW = Math.max(0, (aftertax / wfFd) * 100);
+    const realW     = Math.max(0, (real / wfFd) * 100);
+
+    const setW = (id: string, w: number) => { const el = document.getElementById(id) as HTMLElement; if (el) el.style.width = w + "%"; };
+    setW("wfb-nominal",  100);
+    setW("wfb-aftertax", aftertaxW);
+    setW("wfb-lost-tax", 100 - aftertaxW);
+
+    const realBar = document.getElementById("wfb-real") as HTMLElement;
+    if (realBar) {
+        realBar.style.width = Math.max(0, realW) + "%";
+        realBar.style.background = real < 0 ? "#ef4444" : real < 1.5 ? "#f59e0b" : "#10b981";
+    }
+    setW("wfb-lost-inf", 100 - Math.max(0, realW));
+
+    set("wfv-nominal",  wfFd.toFixed(1)  + "%");
+    set("wfv-aftertax", aftertax.toFixed(1) + "%");
+    set("wfv-real",     (real >= 0 ? "+" : "") + real.toFixed(1) + "%");
+    set("wf-drain-tax", `↓ Tax (${wfTax}%) eats −${taxDrain.toFixed(1)}%`);
+    set("wf-drain-inf", `↓ Inflation (${wfInf}%) burns −${wfInf.toFixed(1)}%`);
+
+    const icon    = document.getElementById("wf-verdict-icon");
+    const txt     = document.getElementById("wf-verdict-text");
+    const hl      = document.getElementById("wf-real-hl");
+    const verdict = document.getElementById("wf-verdict");
+    const realStr = (real >= 0 ? "+" : "") + real.toFixed(1) + "%";
+    if (hl) hl.textContent = realStr;
+    if (real < 0) {
+        if (icon) icon.textContent = "🔴";
+        if (txt)  txt.innerHTML = `Your FD is <strong>destroying wealth in real terms</strong> — <strong style="color:#ef4444">${realStr}/yr</strong>. You are working to stand still.`;
+        if (verdict) verdict.style.borderColor = "#ef4444";
+    } else if (real < 1.5) {
+        if (icon) icon.textContent = "⚠️";
+        if (txt)  txt.innerHTML = `Real return of <strong>${realStr}</strong> — barely above zero. Inflation is winning.`;
+        if (verdict) verdict.style.borderColor = "#f59e0b";
+    } else {
+        if (icon) icon.textContent = "🟡";
+        if (txt)  txt.innerHTML = `A ${realStr} real return is <em>positive</em> — but equity typically delivers 2–4× more over the long run.`;
+        if (verdict) verdict.style.borderColor = "#10b981";
+    }
+}
+["wf-fd","wf-tax","wf-inf"].forEach(id => document.getElementById(id)?.addEventListener("input", updateWaterfall));
+
+/* ══════════════════════════════════════════════════
+   SLIDE 4 — Compounding
+   ══════════════════════════════════════════════════ */
+const compYears = document.getElementById("comp-years") as HTMLInputElement;
+const compRate  = document.getElementById("comp-rate")  as HTMLInputElement;
+
+function updateComp() {
+    const y = Number(compYears.value);
+    const r = Number(compRate.value) / 100;
+    const yd = document.getElementById("comp-years-display");
+    const rd = document.getElementById("comp-rate-display");
+    if (yd) yd.textContent = y + " yrs";
+    if (rd) rd.textContent = compRate.value + "%";
+    const final = 100000 * Math.pow(1 + r, y);
+    const res   = document.getElementById("comp-result");
+    const gain  = document.getElementById("comp-gain");
+    const lbl   = document.getElementById("comp-base-label");
+    if (res)  res.textContent  = fmt(final);
+    if (gain) gain.textContent = "+" + fmt(final - 100000);
+    if (lbl)  lbl.textContent  = fmt(100000) + " grows to";
+    renderHens();
+}
+function renderHens() {
+    const y    = Number(compYears.value);
+    const wrap = document.getElementById("comp-visual");
+    if (!wrap) return;
+    const hens = Math.min(Math.round(Math.pow(1.2, Math.min(y, 10))), 32);
+    const disp = Math.min(hens, 16);
+    wrap.innerHTML = "";
+    const row = document.createElement("div"); row.className = "hens-row";
+    for (let i = 0; i < disp; i++) {
+        const h = document.createElement("span");
+        h.className = "hen"; h.style.animationDelay = `${i * 0.06}s`;
+        h.textContent = i < disp / 2 ? "🐔" : "🥚";
+        row.appendChild(h);
+    }
+    if (hens > 16) { const m = document.createElement("span"); m.className = "hen-more"; m.textContent = `+${hens - 16} more…`; row.appendChild(m); }
+    wrap.appendChild(row);
+}
+compYears?.addEventListener("input", updateComp);
+compRate?.addEventListener("input",  updateComp);
+
+/* ── Init ──────────────────────────────────────────────────────────── */
+goTo(0);
+updateWaterfall();
+</script>
+
+<style>
+/* ── Nav ── */
+.lesson-nav { position:sticky; top:0; z-index:100; height:52px; padding:0 1.5rem; background:rgba(10,10,11,0.8); backdrop-filter:blur(14px); border-bottom:1px solid var(--border-color); display:flex; align-items:center; }
+.nav-inner { width:100%; max-width:1100px; margin:0 auto; display:grid; grid-template-columns:1fr auto 1fr; align-items:center; gap:1rem; }
+.nav-back { display:inline-flex; align-items:center; gap:0.4rem; font-size:0.875rem; color:var(--text-secondary); text-decoration:none; font-weight:500; transition:color 0.2s; }
+.nav-back:hover { color:var(--text-primary); }
+.nav-logo { display:flex; justify-content:center; }
+.nav-progress-wrap { display:flex; align-items:center; gap:0.75rem; justify-content:flex-end; font-size:0.8rem; color:var(--text-secondary); font-weight:600; }
+.nav-prog-bar { width:100px; height:4px; border-radius:4px; background:rgba(255,255,255,0.08); overflow:hidden; }
+.nav-prog-fill { height:100%; background:var(--accent-green); border-radius:4px; width:0%; transition:width 0.4s cubic-bezier(0.4,0,0.2,1); }
+
+/* ── Stage & slides ── */
+.stage { position:relative; min-height:calc(100vh - 52px); display:flex; align-items:stretch; }
+.slides-wrap { flex:1; position:relative; overflow:hidden; }
+.slide { position:absolute; inset:0; opacity:0; transform:translateX(40px); pointer-events:none; transition:opacity 0.4s ease, transform 0.4s ease; overflow-y:auto; padding:2.5rem 1rem 5rem; display:flex; justify-content:center; align-items:flex-start; }
+.slide.active { opacity:1; transform:translateX(0); pointer-events:auto; }
+.slide-inner { width:100%; max-width:780px; display:flex; flex-direction:column; gap:1.25rem; }
+
+.slide-tag { display:inline-block; font-size:0.7rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--accent-green); background:rgba(16,185,129,0.12); border-radius:6px; padding:0.25rem 0.65rem; width:fit-content; }
+.slide-h1 { font-size:clamp(1.8rem,4vw,2.75rem); font-weight:800; margin:0; line-height:1.2; }
+.slide-h2 { font-size:clamp(1.4rem,3vw,2rem); font-weight:700; margin:0; }
+.slide-sub { color:var(--text-secondary); font-size:0.95rem; margin:0; }
+.slide-body { font-size:1rem; line-height:1.75; margin:0; color:var(--text-secondary); }
+.slide-body strong { color:var(--text-primary); }
+.grad-red { background:linear-gradient(135deg,#ef4444 0%,#fb923c 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+
+/* ── Callouts ── */
+.callout { display:flex; align-items:flex-start; gap:0.75rem; border-radius:12px; padding:1rem 1.25rem; font-size:0.9rem; line-height:1.6; }
+.callout p { margin:0; }
+.callout-red   { background:rgba(239,68,68,0.08);  border:1px solid rgba(239,68,68,0.2);  color:#fca5a5; }
+.callout-red svg { color:#ef4444; flex-shrink:0; margin-top:2px; }
+.callout-amber { background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.2); color:#fcd34d; }
+.callout-amber svg { color:#f59e0b; flex-shrink:0; margin-top:2px; }
+.callout-green { background:rgba(16,185,129,0.08); border:1px solid rgba(16,185,129,0.25);color:#6ee7b7; }
+.callout-green svg { color:var(--accent-green); flex-shrink:0; margin-top:2px; }
+
+/* ── Slide 1: Time Machine ── */
+.time-machine { background:rgba(255,255,255,0.02); border:1px solid var(--border-color); border-radius:16px; padding:1.25rem; display:flex; flex-direction:column; gap:1.25rem; }
+.tm-title { font-size:1rem; margin:0; font-weight:700; }
+.tm-sub { font-size:0.85rem; color:var(--text-secondary); margin:0; }
+.tm-input-row { display:grid; grid-template-columns:1fr 120px auto; gap:0.75rem; align-items:flex-end; }
+.tm-input-group { display:flex; flex-direction:column; gap:0.4rem; }
+.tm-input-group label { font-size:0.75rem; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; color:var(--text-secondary); }
+.tm-text-input { background:rgba(255,255,255,0.05); border:1px solid var(--border-color); border-radius:10px; padding:0.6rem 0.85rem; font-family:inherit; font-size:0.9rem; color:var(--text-primary); outline:none; transition:border-color 0.2s; width:100%; box-sizing:border-box; }
+.tm-text-input::placeholder { color:rgba(148,163,184,0.5); }
+.tm-text-input:focus { border-color:rgba(16,185,129,0.5); box-shadow:0 0 0 3px rgba(16,185,129,0.08); }
+.tm-btn { background:var(--accent-green); color:#0a0a0b; border:none; border-radius:10px; padding:0.65rem 1.1rem; font-family:inherit; font-size:0.875rem; font-weight:700; cursor:pointer; white-space:nowrap; transition:all 0.2s; }
+.tm-btn:hover:not(:disabled) { background:#34d399; transform:translateY(-1px); }
+.tm-btn:disabled { opacity:0.6; cursor:not-allowed; transform:none; }
+.tm-log-panel { background:rgba(0,0,0,0.35); border:1px solid rgba(255,255,255,0.07); border-radius:12px; padding:0.85rem 1rem; }
+.tm-log-header { display:flex; align-items:center; gap:0.5rem; margin-bottom:0.5rem; }
+.tm-log-dot { width:8px; height:8px; border-radius:50%; background:var(--accent-green); box-shadow:0 0 6px var(--accent-green); animation:pulse 1.4s infinite; flex-shrink:0; }
+@keyframes pulse { 0%,100%{opacity:1}50%{opacity:0.35} }
+.tm-log-title { font-size:0.75rem; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; color:var(--accent-green); }
+.tm-log-lines { display:flex; flex-direction:column; gap:0.3rem; max-height:130px; overflow-y:auto; font-size:0.8rem; font-family:'IBM Plex Mono',monospace; }
+.tm-log-line { color:rgba(148,163,184,0.85); animation:fadeSlide 0.25s ease both; }
+@keyframes fadeSlide { from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)} }
+.tm-results { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+.tm-card { background:rgba(255,255,255,0.04); border:1px solid var(--border-color); border-radius:12px; padding:1.25rem; position:relative; }
+.tm-c-head { font-size:0.85rem; font-weight:600; color:var(--text-secondary); margin:0 0 1rem; }
+.tm-c-vs { display:flex; align-items:center; justify-content:space-between; }
+.tm-arrow { color:var(--text-secondary); font-size:1.2rem; }
+.tm-val { font-size:1.4rem; font-weight:800; font-variant-numeric:tabular-nums; margin-top:0.2rem; }
+.tm-c-vs small { font-size:0.75rem; color:var(--text-secondary); text-transform:uppercase; letter-spacing:0.05em; font-weight:700; }
+.tm-c-badge { position:absolute; top:1.25rem; right:1.25rem; font-size:0.75rem; font-weight:700; padding:0.2rem 0.5rem; border-radius:6px; background:rgba(239,68,68,0.15); color:#fca5a5; }
+.tm-item-name { font-size:0.72rem; color:var(--text-secondary); margin:0.15rem 0 0.25rem; font-weight:600; line-height:1.3; }
+.tm-insight { display:flex; flex-direction:column; gap:0.5rem; }
+.tm-insight-body { font-size:0.88rem; color:var(--text-secondary); line-height:1.6; margin:0; }
+.tm-sources { display:flex; flex-wrap:wrap; align-items:center; gap:0.35rem 0.5rem; margin-top:0.25rem; }
+.tm-sources-label { font-size:0.72rem; color:rgba(148,163,184,0.5); font-style:italic; }
+.tm-source-link { font-size:0.72rem; color:rgba(16,185,129,0.7); text-decoration:none; border-bottom:1px solid rgba(16,185,129,0.25); transition:color 0.15s; overflow:hidden; text-overflow:ellipsis; max-width:220px; display:inline-block; }
+.tm-source-link:hover { color:var(--accent-green); }
+
+/* ── Generic slider ── */
+.generic-slider { width:100%; height:4px; -webkit-appearance:none; appearance:none; background:rgba(255,255,255,0.1); border-radius:4px; outline:none; cursor:pointer; }
+.generic-slider::-webkit-slider-thumb { -webkit-appearance:none; width:16px; height:16px; background:var(--accent-green); border-radius:50%; box-shadow:0 0 6px rgba(16,185,129,0.5); }
+.generic-slider::-moz-range-thumb { width:16px; height:16px; border:none; background:var(--accent-green); border-radius:50%; }
+
+/* ── Slide 3: Waterfall ── */
+.wf-interactive { display:flex; flex-direction:column; gap:1rem; background:rgba(255,255,255,0.02); border:1px solid var(--border-color); border-radius:16px; padding:1.25rem; }
+.wf-controls { display:grid; grid-template-columns:1fr 1fr 1fr; gap:1rem; }
+.wf-ctrl { display:flex; flex-direction:column; gap:0.4rem; }
+.wf-ctrl-label { font-size:0.75rem; font-weight:600; color:var(--text-secondary); }
+.wf-ctrl-label strong { color:var(--accent-green); }
+.wf-bars { display:flex; flex-direction:column; gap:0.5rem; }
+.wf-step { display:flex; flex-direction:column; gap:0.35rem; }
+.wf-step-label { font-size:0.78rem; font-weight:700; color:var(--text-secondary); }
+.wf-bar-track { display:flex; width:100%; height:36px; border-radius:8px; overflow:hidden; background:rgba(255,255,255,0.04); }
+.wf-bar { display:flex; align-items:center; justify-content:flex-end; padding-right:0.6rem; border-radius:8px 0 0 8px; transition:width 0.4s ease; min-width:2px; }
+.wf-bar-blue  { background:#3b82f6; }
+.wf-bar-amber { background:#f59e0b; }
+.wf-bar-real  { background:#10b981; }
+.wf-bar-val { font-size:0.82rem; font-weight:800; color:#fff; white-space:nowrap; }
+.wf-bar-lost { transition:width 0.4s ease; }
+.wf-bar-lost-tax { background:rgba(239,68,68,0.15); }
+.wf-bar-lost-inf { background:rgba(239,68,68,0.08); border-left:2px dashed rgba(239,68,68,0.3); }
+.wf-drain-label { font-size:0.75rem; color:#f87171; font-weight:600; padding-left:4px; }
+.wf-verdict { display:flex; align-items:center; gap:0.75rem; background:rgba(255,255,255,0.03); border:1px solid #f59e0b; border-radius:12px; padding:0.85rem 1rem; font-size:0.85rem; color:var(--text-secondary); line-height:1.5; transition:border-color 0.3s; }
+.wf-verdict-icon { font-size:1.2rem; flex-shrink:0; }
+.wf-verdict strong { color:var(--text-primary); }
+.wf-verdict em { color:var(--text-primary); }
+.two-col { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+.info-panel { border-radius:14px; padding:1rem; font-size:0.85rem; color:var(--text-secondary); line-height:1.55; border:1px solid; }
+.info-panel h3 { margin:0 0 0.5rem; font-size:0.9rem; color:var(--text-primary); }
+.info-panel p { margin:0; }
+.panel-red   { background:rgba(239,68,68,0.07);  border-color:rgba(239,68,68,0.2);  }
+.panel-green { background:rgba(16,185,129,0.07); border-color:rgba(16,185,129,0.2); }
+
+/* ── Slide 4: Compounding ── */
+.calc-wrap { display:flex; flex-direction:column; gap:1rem; }
+.calc-row { display:flex; flex-direction:column; gap:0.4rem; }
+.calc-row label { font-size:0.82rem; font-weight:600; color:var(--text-secondary); }
+.slider-row { display:flex; align-items:center; gap:0.75rem; }
+.slider-row input[type=range] { flex:1; height:4px; -webkit-appearance:none; appearance:none; background:rgba(255,255,255,0.1); border-radius:4px; outline:none; cursor:pointer; }
+.slider-row input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; width:18px; height:18px; background:var(--accent-green); border-radius:50%; box-shadow:0 0 8px rgba(16,185,129,0.5); }
+.val-display { font-size:0.875rem; font-weight:700; color:var(--accent-green); font-variant-numeric:tabular-nums; min-width:80px; text-align:right; }
+.calc-result { display:grid; grid-template-columns:1fr 1fr; gap:0.75rem; }
+.result-card { border-radius:14px; padding:1rem; display:flex; flex-direction:column; gap:0.25rem; border:1px solid var(--border-color); }
+.result-label { font-size:0.75rem; color:var(--text-secondary); font-weight:600; }
+.result-val { font-size:1.25rem; font-weight:800; }
+.result-good { background:rgba(16,185,129,0.07); } .result-good .result-val { color:var(--accent-green); }
+.hens-row { display:flex; flex-wrap:wrap; gap:0.35rem; align-items:center; padding:0.75rem; background:rgba(255,255,255,0.02); border:1px solid var(--border-color); border-radius:14px; }
+@keyframes popIn { from{transform:scale(0) rotate(-20deg);opacity:0} to{transform:scale(1) rotate(0);opacity:1} }
+.hen { font-size:1.5rem; animation:popIn 0.3s cubic-bezier(0.34,1.56,0.64,1) both; }
+.hen-more { font-size:0.82rem; color:var(--text-secondary); font-weight:600; }
+.hen-metaphor { background:rgba(255,255,255,0.02); border:1px solid var(--border-color); border-radius:14px; padding:1rem 1.25rem; }
+.meta-title { font-weight:700; font-size:0.95rem; margin:0 0 0.5rem; }
+.hen-metaphor p { font-size:0.875rem; color:var(--text-secondary); line-height:1.65; margin:0 0 0.5rem; }
+.hen-metaphor strong { color:var(--text-primary); }
+
+/* ── Slide 5: Pay Yourself First ── */
+.two-paths { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+.path-card { border-radius:16px; padding:1.25rem; border:1px solid var(--border-color); display:flex; flex-direction:column; gap:0.75rem; }
+.path-bad  { background:rgba(239,68,68,0.06);  border-color:rgba(239,68,68,0.2);  }
+.path-good { background:rgba(16,185,129,0.06); border-color:rgba(16,185,129,0.2); }
+.path-header { display:flex; align-items:center; gap:0.5rem; }
+.path-emoji { font-size:1.25rem; }
+.path-header h3 { margin:0; font-size:0.95rem; }
+.path-flow { display:flex; flex-direction:column; gap:0.35rem; }
+.pf-step { padding:0.45rem 0.7rem; border-radius:8px; font-size:0.8rem; font-weight:500; background:rgba(255,255,255,0.04); color:var(--text-secondary); }
+.pf-highlight-red   { background:rgba(239,68,68,0.1);   color:#fca5a5; }
+.pf-highlight-green { background:rgba(16,185,129,0.12); color:#6ee7b7; }
+.pf-arrow { font-size:0.75rem; color:var(--text-secondary); text-align:center; }
+.path-result { margin:0; font-size:0.78rem; font-weight:600; }
+.bad-result  { color:#fca5a5; }
+.good-result { color:var(--accent-green); }
+.complete-banner { display:flex; align-items:center; gap:0.75rem; background:rgba(16,185,129,0.15); border:1px solid rgba(16,185,129,0.4); border-radius:14px; padding:1rem 1.25rem; color:var(--accent-green); font-weight:700; font-size:0.95rem; }
+
+/* ── Nav arrows & dots ── */
+.nav-arrow { position:fixed; top:50%; transform:translateY(-50%); width:44px; height:44px; border-radius:50%; background:rgba(255,255,255,0.06); border:1px solid var(--border-color); display:flex; align-items:center; justify-content:center; cursor:pointer; color:var(--text-primary); transition:all 0.2s; z-index:50; }
+.nav-arrow:hover { background:rgba(255,255,255,0.12); border-color:rgba(255,255,255,0.3); }
+.nav-arrow:disabled { opacity:0.25; pointer-events:none; }
+.prev { left:1rem; } .next { right:1rem; }
+.dots { position:fixed; bottom:1.75rem; left:50%; transform:translateX(-50%); display:flex; gap:0.5rem; z-index:50; }
+.dot { width:8px; height:8px; border-radius:50%; background:rgba(255,255,255,0.2); cursor:pointer; transition:all 0.2s; }
+.dot.active { background:var(--accent-green); transform:scale(1.25); }
+.dot:hover { background:rgba(255,255,255,0.5); }
+
+/* ══ Slide 2 — Lifestyle Inflation full-bleed layout ══ */
+.lf-slide { padding:0 !important; align-items:stretch !important; justify-content:stretch !important; overflow:hidden !important; }
+.lf-layout { display:grid; grid-template-columns:360px 1fr; width:100%; height:100%; box-sizing:border-box; overflow:hidden; }
+.lf-left { display:flex; flex-direction:column; gap:1.4rem; padding:2rem 1.75rem; border-right:1px solid var(--border-color); min-width:0; overflow:hidden; }
+.lf-right { display:flex; flex-direction:column; padding:1.5rem 2rem; min-width:0; min-height:0; }
+
+.lf-control-bar { display:flex; align-items:center; background:rgba(255,255,255,0.05); border:1px solid var(--border-color); border-radius:10px; overflow:hidden; }
+.lf-control-divider { width:1px; background:var(--border-color); align-self:stretch; flex-shrink:0; }
+.lf-salary-input { flex:1; min-width:0; background:transparent; border:none; padding:0.5rem 0.6rem; font-family:inherit; font-size:0.85rem; color:var(--text-primary); outline:none; }
+.lf-salary-input::-webkit-inner-spin-button, .lf-salary-input::-webkit-outer-spin-button { -webkit-appearance:none; margin:0; }
+.lf-apply-btn { background:var(--accent-green); color:#0a0a0b; border:none; padding:0.5rem 0.85rem; font-family:inherit; font-size:0.8rem; font-weight:700; cursor:pointer; white-space:nowrap; transition:background 0.2s; flex-shrink:0; }
+.lf-apply-btn:hover { background:#34d399; }
+.lf-curr-wrap { position:relative; flex-shrink:0; }
+.lf-curr-btn { display:flex; align-items:center; gap:6px; background:transparent; border:none; padding:0.5rem 0.75rem; font-family:inherit; font-size:0.85rem; color:var(--text-primary); cursor:pointer; outline:none; white-space:nowrap; }
+.lf-curr-btn:hover { background:rgba(255,255,255,0.06); }
+.lf-curr-flag { font-size:1.1rem; }
+.lf-curr-label { font-weight:600; }
+.lf-curr-chevron { opacity:0.5; transition:transform 0.2s; }
+.lf-curr-btn[aria-expanded="true"] .lf-curr-chevron { transform:rotate(180deg); }
+.lf-curr-menu { display:none; position:absolute; top:calc(100% + 6px); left:0; z-index:100; min-width:160px; list-style:none; margin:0; padding:4px; background:#1a1a1f; border:1px solid var(--border-color); border-radius:12px; box-shadow:0 8px 32px rgba(0,0,0,0.5); }
+.lf-curr-menu--open { display:block; }
+.lf-curr-opt { display:flex; align-items:center; gap:10px; padding:8px 12px; border-radius:8px; cursor:pointer; transition:background 0.15s; }
+.lf-curr-opt:hover { background:rgba(255,255,255,0.07); }
+.lf-curr-opt--active { background:rgba(16,185,129,0.12); }
+.lf-curr-opt--active .lf-curr-opt-sym { color:var(--accent-green); }
+.lf-curr-opt-flag { font-size:1.15rem; } .lf-curr-opt-name { font-size:0.85rem; font-weight:600; color:var(--text-primary); flex:1; } .lf-curr-opt-sym { font-size:0.85rem; font-weight:700; color:var(--text-secondary); }
+
+.lf-scrubber-block { background:rgba(255,255,255,0.03); border:1px solid var(--border-color); border-radius:16px; padding:1.25rem 1.25rem 1rem; display:flex; flex-direction:column; gap:0.85rem; }
+.lf-scrubber-header { display:flex; justify-content:space-between; align-items:center; }
+.lf-scrubber-title { font-size:0.78rem; font-weight:700; text-transform:uppercase; letter-spacing:0.07em; color:var(--text-secondary); }
+.lf-year-badge { font-size:1rem; font-weight:800; font-variant-numeric:tabular-nums; background:rgba(16,185,129,0.15); border:1px solid rgba(16,185,129,0.4); color:var(--accent-green); border-radius:9px; padding:0.25rem 0.9rem; min-width:6rem; text-align:center; }
+.lf-scrubber { width:100%; -webkit-appearance:none; appearance:none; height:8px; border-radius:8px; outline:none; cursor:pointer; background:linear-gradient(to right, var(--accent-green) 0%, rgba(255,255,255,0.1) 0%); }
+.lf-scrubber::-webkit-slider-thumb { -webkit-appearance:none; width:26px; height:26px; border-radius:50%; background:#fff; box-shadow:0 0 0 4px rgba(16,185,129,0.45),0 2px 10px rgba(0,0,0,0.5); cursor:grab; transition:transform 0.15s; }
+.lf-scrubber::-webkit-slider-thumb:active { transform:scale(1.2); cursor:grabbing; }
+.lf-scrubber::-moz-range-thumb { width:26px; height:26px; border-radius:50%; border:none; background:#fff; box-shadow:0 0 0 4px rgba(16,185,129,0.45); cursor:grab; }
+.lf-scrubber-ends { display:flex; justify-content:space-between; font-size:0.75rem; font-weight:600; color:var(--text-secondary); }
+.lf-stage-pips { position:relative; height:20px; margin-top:-0.25rem; }
+.lf-pip { position:absolute; transform:translateX(-50%); font-size:0.9rem; line-height:1; cursor:default; user-select:none; }
+
+.lf-stage-banner { display:flex; align-items:center; gap:0.85rem; background:rgba(255,255,255,0.03); border:1px solid var(--border-color); border-radius:14px; padding:0.9rem 1.1rem; transition:border-color 0.5s ease; }
+.lf-stage-icon { font-size:1.75rem; flex-shrink:0; }
+.lf-stage-text { display:flex; flex-direction:column; gap:0.2rem; min-width:0; }
+.lf-stage-name { font-size:0.92rem; font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.lf-stage-desc { font-size:0.75rem; color:var(--text-secondary); line-height:1.4; }
+
+.lf-stats-bar { display:grid; grid-template-columns:1fr 1fr 1fr; background:rgba(255,255,255,0.03); border:1px solid var(--border-color); border-radius:14px; overflow:hidden; }
+.lf-stat { display:flex; flex-direction:column; gap:0.3rem; padding:1rem; }
+.lf-stat:not(:last-child) { border-right:1px solid var(--border-color); }
+.lf-stat-label { font-size:0.65rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--text-secondary); }
+.lf-stat-val { font-size:0.85rem; font-weight:700; font-variant-numeric:tabular-nums; color:#fff; }
+.lf-green { color:var(--accent-green) !important; }
+.lf-stat-red { color:#ef4444 !important; }
+.lf-stat-amber { color:#f59e0b !important; }
+
+.lf-table-wrap { height:100%; overflow-y:auto; border:1px solid var(--border-color); border-radius:12px; }
+.lf-table { width:100%; border-collapse:collapse; }
+.lf-th { padding:14px 20px; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:var(--text-secondary); background:rgba(255,255,255,0.03); border-bottom:1px solid var(--border-color); white-space:nowrap; }
+.lf-th-item { text-align:left; width:45%; } .lf-th-price { text-align:right; width:20%; } .lf-th-pct { text-align:right; width:20%; } .lf-th-dot { text-align:center; width:15%; }
+:global(.lf-row) { transition:background 0.15s; }
+:global(.lf-row:hover) { background:rgba(255,255,255,0.03); }
+:global(.lf-row:not(:last-child) td) { border-bottom:1px solid rgba(255,255,255,0.05); }
+:global(.lf-td) { padding:14px 20px; font-size:15px; font-variant-numeric:tabular-nums; white-space:nowrap; }
+:global(.lf-td-item) { font-weight:600; color:var(--text-primary); }
+:global(.lf-td-price) { text-align:right; color:var(--text-secondary); font-weight:500; }
+:global(.lf-td-pct)   { text-align:right; color:var(--text-secondary); font-weight:500; }
+:global(.lf-td-dot)   { text-align:center; }
+:global(.lf-status) { display:inline-block; width:14px; height:14px; border-radius:50%; transition:background 0.3s,box-shadow 0.3s; }
+:global(.lf-status--green)   { background:#10b981; box-shadow:0 0 6px rgba(16,185,129,0.8); }
+:global(.lf-status--amber)   { background:#f59e0b; box-shadow:0 0 6px rgba(245,158,11,0.8); }
+:global(.lf-status--red)     { background:#ef4444; box-shadow:0 0 6px rgba(239,68,68,0.8); }
+:global(.lf-status--dropped) { background:rgba(255,255,255,0.12); box-shadow:none; }
+@keyframes lfRowSlideIn { from{opacity:0;transform:translateY(-8px);background:rgba(16,185,129,0.12)} to{opacity:1;transform:translateY(0);background:transparent} }
+:global(.lf-row-new)  { animation:lfRowSlideIn 0.45s cubic-bezier(0.22,1,0.36,1) both; }
+:global(.lf-row-dropped) { opacity:0.38; }
+:global(.lf-row-dropped .lf-td-item) { text-decoration:line-through; color:var(--text-secondary); }
+:global(.lf-row-dropped .lf-td-price), :global(.lf-row-dropped .lf-td-pct) { color:rgba(148,163,184,0.4); }
+:global(.lf-drop-note) { font-size:0.68rem; font-weight:400; color:rgba(148,163,184,0.5); font-style:italic; display:block; margin-top:0.15rem; text-decoration:none; }
+
+/* ── Responsive ── */
+@media (max-width:640px) {
+    .two-col, .two-paths, .calc-result, .wf-controls { grid-template-columns:1fr; }
+    .nav-arrow { display:none; }
+    .slide { padding:1.5rem 0.75rem 5rem; }
+    .tm-input-row { grid-template-columns:1fr; }
+    .tm-input-year { display:none; }
+    .tm-results { grid-template-columns:1fr; }
+    .lf-slide { overflow-y:auto !important; }
+    .lf-layout { grid-template-columns:1fr; height:auto; }
+    .lf-left { border-right:none; border-bottom:1px solid var(--border-color); }
+    .lf-right { min-height:400px; }
+    .lf-th-pct { display:none; }
+    :global(.lf-td-pct) { display:none; }
+}
+</style>

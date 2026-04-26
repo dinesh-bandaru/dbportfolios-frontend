@@ -1,0 +1,649 @@
+---
+import Layout from "../layouts/Layout.astro";
+import BrandLogo from "../components/BrandLogo.astro";
+---
+
+<Layout title="Lesson 2 — Where to Put Your Money | DB Portfolios">
+<div id="auth-checker" style="display:none;">
+
+<!-- ── NAV ── -->
+<nav class="lesson-nav">
+    <div class="nav-inner">
+        <a href="/dashboard" class="nav-back">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+            Dashboard
+        </a>
+        <a href="/dashboard" class="nav-logo"><BrandLogo width="120" height="20" color="#ffffff" /></a>
+        <div class="nav-progress-wrap">
+            <span id="slide-counter">1 / 5</span>
+            <div class="nav-prog-bar"><div class="nav-prog-fill" id="nav-fill"></div></div>
+        </div>
+    </div>
+</nav>
+
+<main class="stage">
+<div class="slides-wrap" id="slides-wrap">
+
+<!-- ════════════════════════════════════════════
+     SLIDE 1 — Hook
+     Not all money works equally hard.
+     ════════════════════════════════════════════ -->
+<div class="slide active" data-slide="0">
+    <div class="slide-inner">
+        <span class="slide-tag">Where to Put Your Money</span>
+        <h1 class="slide-h1">Not All Money<br/><span class="grad">Works Equally Hard</span></h1>
+        <p class="slide-body">You've seen how inflation silently drains idle savings. Now the question becomes: <strong>where do you put your money instead?</strong></p>
+        <p class="slide-body">Different instruments offer vastly different outcomes — not just in return, but in risk, liquidity, tax treatment, and how long they tie up your capital. Most people choose based on <strong>one factor</strong> and miss the full picture.</p>
+
+        <div class="intro-grid">
+            <div class="ig-card ig-blue">
+                <span class="ig-icon">⚖️</span>
+                <span class="ig-label">Risk</span>
+                <span class="ig-sub">Probability of losing principal</span>
+            </div>
+            <div class="ig-card ig-green">
+                <span class="ig-icon">📈</span>
+                <span class="ig-label">Return</span>
+                <span class="ig-sub">Must beat inflation to matter</span>
+            </div>
+            <div class="ig-card ig-amber">
+                <span class="ig-icon">⏳</span>
+                <span class="ig-label">Time</span>
+                <span class="ig-sub">Lock-in period traps capital</span>
+            </div>
+            <div class="ig-card ig-purple">
+                <span class="ig-icon">💧</span>
+                <span class="ig-label">Liquidity</span>
+                <span class="ig-sub">Can you access it in a crisis?</span>
+            </div>
+            <div class="ig-card ig-red">
+                <span class="ig-icon">🏛️</span>
+                <span class="ig-label">Taxation</span>
+                <span class="ig-sub">Always calculate post-tax returns</span>
+            </div>
+        </div>
+
+        <div class="callout callout-amber">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            <p>Choosing low risk while ignoring liquidity, tax drag, or inflation protection is how most people end up working forever. Judge every instrument against <strong>all five criteria.</strong></p>
+        </div>
+    </div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     SLIDE 2 — 20-Year Growth Chart
+     Country-aware, toggleable asset lines.
+     ════════════════════════════════════════════ -->
+<div class="slide" data-slide="1">
+    <div class="slide-inner">
+        <span class="slide-tag">The 20-Year Picture</span>
+        <h2 class="slide-h2" id="chart-heading">20-Year Growth of 100,000</h2>
+        <p class="slide-sub">Toggle asset classes. See where the gaps open up. The math is unforgiving.</p>
+
+        <div class="chart-top-bar">
+            <div class="chart-toggles" id="chart-toggles">
+                <button class="toggle-btn active" data-line="equity">Equity Index</button>
+                <button class="toggle-btn active" data-line="realestate">Real Estate</button>
+                <button class="toggle-btn active" data-line="fd">Fixed Deposit</button>
+                <button class="toggle-btn active" data-line="cash">Idle Cash (after inflation)</button>
+            </div>
+            <!-- Country picker -->
+            <div class="chart-country-wrap" id="chart-country-wrap">
+                <button class="chart-country-btn" id="chart-country-btn" type="button" aria-haspopup="listbox" aria-expanded="false">
+                    <span id="chart-flag">🇮🇳</span>
+                    <span id="chart-country-label">India</span>
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <ul class="chart-country-menu" id="chart-country-menu" role="listbox">
+                    <li class="cco" data-code="IN" role="option">🇮🇳 India</li>
+                    <li class="cco" data-code="US" role="option">🇺🇸 USA</li>
+                    <li class="cco" data-code="GB" role="option">🇬🇧 UK</li>
+                    <li class="cco" data-code="AU" role="option">🇦🇺 Australia</li>
+                    <li class="cco" data-code="SG" role="option">🇸🇬 Singapore</li>
+                    <li class="cco" data-code="DE" role="option">🇩🇪 Germany</li>
+                </ul>
+            </div>
+        </div>
+
+        <canvas id="growth-chart" width="700" height="300"></canvas>
+
+        <div class="chart-rate-strip" id="chart-rate-strip">
+            <!-- populated by JS -->
+        </div>
+
+        <p class="chart-note">Idle cash modelled as CPI-adjusted nominal return (negative real). FD after-tax. Equity and real estate gross long-run historical averages.</p>
+    </div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     SLIDE 3 — The Traps: FD + Insurance
+     Merged from old slides 4+5 (L2).
+     ════════════════════════════════════════════ -->
+<div class="slide" data-slide="2">
+    <div class="slide-inner">
+        <span class="slide-tag">The Traps</span>
+        <h2 class="slide-h2">The Two Instruments That Feel Safe — And Aren't</h2>
+
+        <div class="trap-grid">
+            <!-- FD card -->
+            <div class="trap-card trap-fd">
+                <div class="trap-card-header">
+                    <span class="trap-icon">🏦</span>
+                    <h3>Fixed Deposits</h3>
+                    <span class="trap-badge trap-badge-amber">Low real return</span>
+                </div>
+                <p class="trap-body">Banks advertise <strong>~6–8%</strong>. After 30% tax: <strong>~4.9%</strong>. After 5–6% inflation: <strong>real return near zero or negative.</strong> Capital is locked for months or years. You pay tax on the interest even in bad years.</p>
+                <div class="trap-score-row">
+                    <div class="trap-score ts-bad"><span>Return</span><span>~0–1% real</span></div>
+                    <div class="trap-score ts-bad"><span>Liquidity</span><span>Low (penalty)</span></div>
+                    <div class="trap-score ts-bad"><span>Tax</span><span>Fully taxable</span></div>
+                </div>
+                <div class="trap-verdict trap-verdict-amber">Use FDs only for your emergency fund — 3 to 6 months of expenses. Nothing more.</div>
+            </div>
+
+            <!-- Insurance card -->
+            <div class="trap-card trap-ins">
+                <div class="trap-card-header">
+                    <span class="trap-icon">📋</span>
+                    <h3>Bundled Insurance (ULIPs)</h3>
+                    <span class="trap-badge trap-badge-red">Hidden costs</span>
+                </div>
+                <p class="trap-body">ULIPs and endowment plans bundle life cover with "investment." Opaque charges — entry loads, mortality deductions, fund management fees — make it <strong>impossible to see what you actually pay.</strong> Exit early and you lose a large chunk.</p>
+                <div class="ulip-flow">
+                    <div class="uf-box uf-in">Your Premium</div>
+                    <div class="uf-arrow">→</div>
+                    <div class="uf-box uf-drain">Entry Loads + Agent Commission</div>
+                    <div class="uf-arrow">→</div>
+                    <div class="uf-box uf-drain">Mortality + Fund Fees</div>
+                    <div class="uf-arrow">→</div>
+                    <div class="uf-box uf-out">Subpar returns + weak cover</div>
+                </div>
+                <div class="trap-verdict trap-verdict-red">Separate protection from growth. Buy pure term life insurance. Invest separately.</div>
+            </div>
+        </div>
+
+        <div class="rule-box">
+            <span class="rule-label">Golden Rule</span>
+            <p><strong>Keep insurance and investments completely separate.</strong> Term life for protection — it's cheap and clean. Index funds for growth — no hidden fees, full transparency.</p>
+        </div>
+    </div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     SLIDE 4 — Real Estate vs Equity
+     ════════════════════════════════════════════ -->
+<div class="slide" data-slide="3">
+    <div class="slide-inner">
+        <span class="slide-tag">Real Estate vs Equity</span>
+        <h2 class="slide-h2">The Better Growth Engine</h2>
+        <p class="slide-sub">Real estate provides shelter and utility. As your <em>primary</em> wealth-building vehicle, it comes with serious structural disadvantages.</p>
+
+        <div class="compare-table">
+            <div class="ct-header">
+                <div></div>
+                <div class="ct-col-label">🏠 Real Estate</div>
+                <div class="ct-col-label">📊 Equity Index</div>
+            </div>
+            <div class="ct-row"><div class="ct-row-label">Gross Return</div><div class="ct-cell ct-neutral">~7–8%</div><div class="ct-cell ct-good">~12–15%</div></div>
+            <div class="ct-row"><div class="ct-row-label">Hidden Costs</div><div class="ct-cell ct-bad">Mortgage interest, property tax, maintenance, stamp duty</div><div class="ct-cell ct-good">Tiny expense ratio (~0.1%)</div></div>
+            <div class="ct-row"><div class="ct-row-label">Liquidity</div><div class="ct-cell ct-bad">Very low — weeks or months to sell</div><div class="ct-cell ct-good">Sell any quantity any market day</div></div>
+            <div class="ct-row"><div class="ct-row-label">Emergency Access</div><div class="ct-cell ct-bad">Cannot sell one room to raise cash</div><div class="ct-cell ct-good">Partial redemption at any time</div></div>
+            <div class="ct-row"><div class="ct-row-label">Leverage Risk</div><div class="ct-cell ct-bad">Usually bought with debt — amplifies losses</div><div class="ct-cell ct-neutral">Optional; no forced leverage</div></div>
+            <div class="ct-row"><div class="ct-row-label">Entry Cost</div><div class="ct-cell ct-bad">Millions — often requires a loan</div><div class="ct-cell ct-good">Any amount, as low as ₹100</div></div>
+        </div>
+
+        <div class="callout callout-green">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            <p>Own a home if you want one — but don't count debt-heavy property as your <em>investment portfolio</em>. Equity index funds are the more efficient, more liquid, more accessible wealth engine for most people.</p>
+        </div>
+    </div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     SLIDE 5 — Action Plan
+     Pyramid + pay yourself first, tightened.
+     ════════════════════════════════════════════ -->
+<div class="slide" data-slide="4">
+    <div class="slide-inner">
+        <span class="slide-tag">Your Action Plan</span>
+        <h2 class="slide-h2">Build in the Right Order</h2>
+        <p class="slide-sub">The Investment Pyramid — every layer must be solid before you build the next.</p>
+
+        <div class="pyramid-wrap">
+            <div class="pyr-row pyr-1"><div class="pyr-block"><span>Growth Capital</span><small>Equity Index Funds — let compounding work</small></div></div>
+            <div class="pyr-row pyr-2"><div class="pyr-block"><span>Protection</span><small>Pure Term Life Insurance — cheap, clean, separate</small></div></div>
+            <div class="pyr-row pyr-3"><div class="pyr-block"><span>Emergency Fund</span><small>3–6 months of expenses — liquid, accessible</small></div></div>
+        </div>
+
+        <div class="action-steps">
+            <div class="action-step">
+                <span class="step-num">1</span>
+                <p><strong>Audit right now.</strong> Open your bank statement. List every FD, every recurring premium. Calculate the real return after tax and inflation on each one.</p>
+            </div>
+            <div class="action-step">
+                <span class="step-num">2</span>
+                <p><strong>Free look period.</strong> If you bought a bundled policy recently, you have a <strong>15-day free look window</strong> to cancel for a full refund. Check the date.</p>
+            </div>
+            <div class="action-step">
+                <span class="step-num">3</span>
+                <p><strong>Pay yourself first.</strong> Set up an automatic transfer to your index fund the day your salary arrives. Spend what remains. This one habit changes everything.</p>
+            </div>
+        </div>
+
+        <div class="callout callout-green">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            <p>The pyramid works bottom-up. Build your emergency fund first. Then get your insurance right. Then channel every surplus rupee into equity. <strong>Order matters.</strong></p>
+        </div>
+
+        <div id="complete-banner" class="complete-banner" style="display:none;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            Lesson 2 Complete — you know where to put your money.
+        </div>
+    </div>
+</div>
+
+</div><!-- /slides-wrap -->
+
+<button class="nav-arrow prev" id="btn-prev" aria-label="Previous"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg></button>
+<button class="nav-arrow next" id="btn-next" aria-label="Next"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></button>
+
+<div class="dots" id="dots">
+    <span class="dot active" data-i="0"></span>
+    <span class="dot" data-i="1"></span>
+    <span class="dot" data-i="2"></span>
+    <span class="dot" data-i="3"></span>
+    <span class="dot" data-i="4"></span>
+</div>
+</main>
+</div><!-- /auth-checker -->
+
+<script>
+const token = localStorage.getItem("auth_token");
+if (!token) { window.location.href = "/login"; }
+else { (document.getElementById("auth-checker") as HTMLElement).style.display = "block"; }
+
+declare global { interface Window { __GEO__: { country: string; currency: string; symbol: string; locale: string; timezone: string; city: string } } }
+const GEO = window.__GEO__ ?? { country: "IN", currency: "INR", symbol: "₹", locale: "en-IN", timezone: "Asia/Kolkata", city: "Mumbai" };
+
+/* ── Country presets for the chart ──────────────────────────────── */
+interface ChartPreset { flag:string; label:string; symbol:string; locale:string; equity:number; realestate:number; fd:number; inflation:number; fdTax:number; base:number; }
+const CHART_PRESETS: Record<string, ChartPreset> = {
+    IN: { flag:"🇮🇳", label:"India",     symbol:"₹",   locale:"en-IN", equity:0.135, realestate:0.075, fd:0.070, inflation:0.055, fdTax:0.30, base:100000   },
+    US: { flag:"🇺🇸", label:"USA",       symbol:"$",   locale:"en-US", equity:0.105, realestate:0.065, fd:0.050, inflation:0.035, fdTax:0.22, base:10000    },
+    GB: { flag:"🇬🇧", label:"UK",        symbol:"£",   locale:"en-GB", equity:0.095, realestate:0.060, fd:0.050, inflation:0.040, fdTax:0.20, base:10000    },
+    AU: { flag:"🇦🇺", label:"Australia", symbol:"A$",  locale:"en-AU", equity:0.095, realestate:0.065, fd:0.045, inflation:0.035, fdTax:0.32, base:10000    },
+    SG: { flag:"🇸🇬", label:"Singapore", symbol:"S$",  locale:"en-SG", equity:0.090, realestate:0.055, fd:0.035, inflation:0.025, fdTax:0.17, base:10000    },
+    DE: { flag:"🇩🇪", label:"Germany",   symbol:"€",   locale:"de-DE", equity:0.085, realestate:0.050, fd:0.035, inflation:0.035, fdTax:0.26, base:10000    },
+};
+
+function detectCountry(): string {
+    const c = GEO.country;
+    if (CHART_PRESETS[c]) return c;
+    if (["FR","IT","ES","NL","BE","AT","PT","GR","FI","IE"].includes(c)) return "DE";
+    if (c === "NZ") return "AU";
+    return "IN";
+}
+
+let chartCountry = detectCountry();
+let CP = CHART_PRESETS[chartCountry];
+
+function fmtChart(v: number): string {
+    const a = Math.abs(v); const sym = CP.symbol;
+    if (chartCountry === "IN") {
+        if (a >= 10000000) return sym + (a/10000000).toFixed(1) + "Cr";
+        if (a >= 100000)   return sym + (a/100000).toFixed(1) + "L";
+        return sym + (a/1000).toFixed(0) + "K";
+    }
+    if (a >= 1000000) return sym + (a/1000000).toFixed(1) + "M";
+    return sym + (a/1000).toFixed(0) + "K";
+}
+
+/* ── Slide navigation ─────────────────────────────────────────── */
+const TOTAL = 5;
+let current = 0;
+const slides = document.querySelectorAll<HTMLElement>(".slide");
+const dots   = document.querySelectorAll<HTMLElement>(".dot");
+const counter = document.getElementById("slide-counter")!;
+const navFill = document.getElementById("nav-fill")!;
+
+function goTo(idx: number) {
+    slides[current].classList.remove("active");
+    dots[current].classList.remove("active");
+    current = Math.max(0, Math.min(idx, TOTAL - 1));
+    slides[current].classList.add("active");
+    dots[current].classList.add("active");
+    counter.textContent = `${current + 1} / ${TOTAL}`;
+    navFill.style.width = `${((current + 1) / TOTAL) * 100}%`;
+    (document.getElementById("btn-prev") as HTMLButtonElement).disabled = current === 0;
+    if (current === 1) drawChart();
+    if (current === TOTAL - 1) {
+        localStorage.setItem("lesson_2_done", "true");
+        const banner = document.getElementById("complete-banner");
+        if (banner) banner.style.display = "flex";
+        const btn = document.getElementById("btn-next") as HTMLButtonElement;
+        btn.title = "Back to Dashboard";
+        btn.onclick = () => { window.location.href = "/dashboard"; };
+    }
+}
+document.getElementById("btn-prev")?.addEventListener("click", () => goTo(current - 1));
+document.getElementById("btn-next")?.addEventListener("click", () => { if (current < TOTAL - 1) goTo(current + 1); });
+dots.forEach(d => d.addEventListener("click", () => goTo(Number(d.dataset.i))));
+document.addEventListener("keydown", e => {
+    if (e.key === "ArrowRight" || e.key === "ArrowDown") goTo(current + 1);
+    if (e.key === "ArrowLeft"  || e.key === "ArrowUp")   goTo(current - 1);
+});
+
+/* ── Chart country picker ─────────────────────────────────────── */
+function applyChartCountry(code: string) {
+    chartCountry = code;
+    CP = CHART_PRESETS[code];
+    const flagEl  = document.getElementById("chart-flag");
+    const labelEl = document.getElementById("chart-country-label");
+    if (flagEl)  flagEl.textContent  = CP.flag;
+    if (labelEl) labelEl.textContent = CP.label;
+    document.querySelectorAll(".cco").forEach(el => el.classList.remove("cco--active"));
+    document.querySelector(`.cco[data-code="${code}"]`)?.classList.add("cco--active");
+    // Update heading
+    const heading = document.getElementById("chart-heading");
+    if (heading) {
+        const base = chartCountry === "IN" ? `₹1,00,000` : `${CP.symbol}${CP.base.toLocaleString(CP.locale)}`;
+        heading.textContent = `20-Year Growth of ${base}`;
+    }
+    drawChart();
+    updateRateStrip();
+}
+document.getElementById("chart-country-btn")?.addEventListener("click", () => {
+    const menu = document.getElementById("chart-country-menu");
+    const btn  = document.getElementById("chart-country-btn");
+    const open = menu?.classList.toggle("chart-country-menu--open");
+    btn?.setAttribute("aria-expanded", String(open));
+});
+document.querySelectorAll(".cco").forEach(opt => {
+    opt.addEventListener("click", () => {
+        applyChartCountry((opt as HTMLElement).dataset.code ?? "IN");
+        document.getElementById("chart-country-menu")?.classList.remove("chart-country-menu--open");
+        document.getElementById("chart-country-btn")?.setAttribute("aria-expanded","false");
+    });
+});
+document.addEventListener("click", e => {
+    const wrap = document.getElementById("chart-country-wrap");
+    if (wrap && !wrap.contains(e.target as Node)) {
+        document.getElementById("chart-country-menu")?.classList.remove("chart-country-menu--open");
+        document.getElementById("chart-country-btn")?.setAttribute("aria-expanded","false");
+    }
+});
+
+/* ── Rate strip ───────────────────────────────────────────────── */
+function updateRateStrip() {
+    const strip = document.getElementById("chart-rate-strip");
+    if (!strip) return;
+    const fdAfterTax = (CP.fd * (1 - CP.fdTax) - CP.inflation).toFixed(1);
+    strip.innerHTML = `
+        <div class="crs-item" style="color:#3b82f6"><span class="crs-dot"></span><span>Equity</span><strong>${(CP.equity*100).toFixed(1)}%</strong></div>
+        <div class="crs-item" style="color:#8b5cf6"><span class="crs-dot"></span><span>Real Estate</span><strong>${(CP.realestate*100).toFixed(1)}%</strong></div>
+        <div class="crs-item" style="color:#f59e0b"><span class="crs-dot"></span><span>FD (after-tax real)</span><strong style="color:${Number(fdAfterTax)<0?'#ef4444':'#f59e0b'}">${fdAfterTax}%</strong></div>
+        <div class="crs-item" style="color:#ef4444"><span class="crs-dot"></span><span>Idle Cash (real)</span><strong>−${(CP.inflation*100).toFixed(1)}%</strong></div>
+        <div class="crs-sep"></div>
+        <div class="crs-item" style="color:var(--text-secondary)"><span>Inflation</span><strong>${(CP.inflation*100).toFixed(1)}%</strong></div>
+        <div class="crs-item" style="color:var(--text-secondary)"><span>FD tax</span><strong>${(CP.fdTax*100).toFixed(0)}%</strong></div>
+    `;
+    // Color the dots to match lines
+    const dots2 = strip.querySelectorAll<HTMLElement>(".crs-dot");
+    const colors = ["#3b82f6","#8b5cf6","#f59e0b","#ef4444"];
+    dots2.forEach((d, i) => { if (colors[i]) d.style.background = colors[i]; });
+}
+
+/* ── Canvas chart ─────────────────────────────────────────────── */
+const YEARS = Array.from({length:21}, (_,i) => i);
+const LINE_COLORS: Record<string,string> = { equity:"#3b82f6", realestate:"#8b5cf6", fd:"#f59e0b", cash:"#ef4444" };
+let visible: Record<string,boolean> = { equity:true, realestate:true, fd:true, cash:true };
+
+function getRates() {
+    return {
+        equity:     CP.equity,
+        realestate: CP.realestate,
+        fd:         CP.fd * (1 - CP.fdTax),   // after-tax nominal
+        cash:       -CP.inflation,             // real value of idle cash
+    };
+}
+
+function drawChart() {
+    const canvas = document.getElementById("growth-chart") as HTMLCanvasElement;
+    const ctx    = canvas?.getContext("2d");
+    if (!ctx || !canvas) return;
+
+    const dpr = window.devicePixelRatio || 1;
+    const W = 700, H = 300;
+    canvas.width  = W * dpr;
+    canvas.height = H * dpr;
+    canvas.style.width  = W + "px";
+    canvas.style.height = H + "px";
+    ctx.scale(dpr, dpr);
+
+    const PAD = { top:20, right:60, bottom:40, left:74 };
+    const cW = W - PAD.left - PAD.right;
+    const cH = H - PAD.top  - PAD.bottom;
+    ctx.clearRect(0, 0, W, H);
+    ctx.font = "11px 'Space Grotesk', sans-serif";
+
+    const base = CP.base;
+    const rates = getRates();
+    const series: Record<string,number[]> = {};
+    Object.entries(rates).forEach(([k, r]) => { series[k] = YEARS.map(y => base * Math.pow(1 + r, y)); });
+
+    const allVals = Object.entries(series).filter(([k]) => visible[k]).flatMap(([,v]) => v);
+    if (allVals.length === 0) return;
+    const maxV = Math.max(...allVals) * 1.05;
+    const minV = Math.min(...allVals, 0);
+
+    function xOf(yr: number) { return PAD.left + (yr / 20) * cW; }
+    function yOf(v: number)  { return PAD.top  + cH - ((v - minV) / (maxV - minV)) * cH; }
+
+    // Grid
+    const gridCount = 5;
+    ctx.textAlign = "right";
+    for (let i = 0; i <= gridCount; i++) {
+        const v = minV + (maxV - minV) * (i / gridCount);
+        const y = yOf(v);
+        ctx.strokeStyle = "rgba(255,255,255,0.05)"; ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.moveTo(PAD.left, y); ctx.lineTo(PAD.left + cW, y); ctx.stroke();
+        ctx.fillStyle = "#64748b"; ctx.fillText(fmtChart(v), PAD.left - 4, y + 4);
+    }
+    ctx.textAlign = "center"; ctx.fillStyle = "#64748b";
+    [0,5,10,15,20].forEach(yr => ctx.fillText(`Yr ${yr}`, xOf(yr), H - PAD.bottom + 18));
+
+    // Lines
+    Object.entries(series).forEach(([key, vals]) => {
+        if (!visible[key]) return;
+        const color = LINE_COLORS[key];
+        ctx.save();
+        ctx.strokeStyle = color; ctx.lineWidth = 2.5;
+        ctx.shadowColor = color; ctx.shadowBlur = 5;
+        ctx.beginPath();
+        vals.forEach((v, i) => { const x = xOf(i), y = yOf(v); i === 0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y); });
+        ctx.stroke();
+        ctx.shadowBlur = 0;
+        // End label
+        const lastV = vals[20];
+        ctx.fillStyle = color; ctx.textAlign = "left"; ctx.font = "bold 10px 'Space Grotesk', sans-serif";
+        ctx.fillText(fmtChart(lastV), xOf(20) + 4, yOf(lastV) + 4);
+        ctx.restore();
+    });
+}
+
+// Toggle buttons
+document.getElementById("chart-toggles")?.querySelectorAll<HTMLButtonElement>(".toggle-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+        const line = btn.dataset.line!;
+        visible[line] = !visible[line];
+        btn.classList.toggle("active", visible[line]);
+        drawChart();
+    });
+});
+
+/* ── Init ─────────────────────────────────────────────────────── */
+applyChartCountry(chartCountry);
+goTo(0);
+</script>
+
+<style>
+/* ── Nav ── */
+.lesson-nav { position:sticky; top:0; z-index:100; height:52px; padding:0 1.5rem; background:rgba(10,10,11,0.8); backdrop-filter:blur(14px); border-bottom:1px solid var(--border-color); display:flex; align-items:center; }
+.nav-inner { width:100%; max-width:1100px; margin:0 auto; display:grid; grid-template-columns:1fr auto 1fr; align-items:center; gap:1rem; }
+.nav-back { display:inline-flex; align-items:center; gap:0.4rem; font-size:0.875rem; color:var(--text-secondary); text-decoration:none; font-weight:500; transition:color 0.2s; }
+.nav-back:hover { color:var(--text-primary); }
+.nav-logo { display:flex; justify-content:center; }
+.nav-progress-wrap { display:flex; align-items:center; gap:0.75rem; justify-content:flex-end; font-size:0.8rem; color:var(--text-secondary); font-weight:600; }
+.nav-prog-bar { width:100px; height:4px; border-radius:4px; background:rgba(255,255,255,0.08); overflow:hidden; }
+.nav-prog-fill { height:100%; background:var(--accent-green); border-radius:4px; width:0%; transition:width 0.4s cubic-bezier(0.4,0,0.2,1); }
+
+/* ── Stage & slides ── */
+.stage { position:relative; min-height:calc(100vh - 52px); display:flex; align-items:stretch; }
+.slides-wrap { flex:1; position:relative; overflow:hidden; }
+.slide { position:absolute; inset:0; opacity:0; transform:translateX(40px); pointer-events:none; transition:opacity 0.4s ease, transform 0.4s ease; overflow-y:auto; padding:2.5rem 1rem 5rem; display:flex; justify-content:center; align-items:flex-start; }
+.slide.active { opacity:1; transform:translateX(0); pointer-events:auto; }
+.slide-inner { width:100%; max-width:820px; display:flex; flex-direction:column; gap:1.25rem; }
+
+.slide-tag { display:inline-block; font-size:0.7rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--accent-green); background:rgba(16,185,129,0.12); border-radius:6px; padding:0.25rem 0.65rem; width:fit-content; }
+.slide-h1 { font-size:clamp(1.8rem,4vw,2.75rem); font-weight:800; margin:0; line-height:1.2; }
+.slide-h2 { font-size:clamp(1.4rem,3vw,2rem); font-weight:700; margin:0; }
+.slide-sub { color:var(--text-secondary); font-size:0.9rem; margin:0; }
+.slide-body { font-size:0.95rem; line-height:1.75; margin:0; color:var(--text-secondary); }
+.slide-body strong { color:var(--text-primary); }
+.grad { background:linear-gradient(135deg,var(--accent-green) 0%,#34d399 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+
+/* ── Callouts ── */
+.callout { display:flex; align-items:flex-start; gap:0.75rem; border-radius:12px; padding:1rem 1.25rem; font-size:0.9rem; line-height:1.6; }
+.callout p { margin:0; }
+.callout-amber { background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.2); color:#fcd34d; }
+.callout-amber svg { color:#f59e0b; flex-shrink:0; margin-top:2px; }
+.callout-green { background:rgba(16,185,129,0.08); border:1px solid rgba(16,185,129,0.25); color:#6ee7b7; }
+.callout-green svg { color:var(--accent-green); flex-shrink:0; margin-top:2px; }
+.callout p strong { color:inherit; }
+.callout p em { color:inherit; }
+
+/* ── Slide 1: Intro grid ── */
+.intro-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:0.6rem; }
+.ig-card { border-radius:12px; padding:0.85rem 0.6rem; display:flex; flex-direction:column; align-items:center; text-align:center; gap:0.35rem; border:1px solid; }
+.ig-icon { font-size:1.4rem; }
+.ig-label { font-size:0.82rem; font-weight:700; }
+.ig-sub { font-size:0.68rem; color:var(--text-secondary); line-height:1.3; }
+.ig-blue   { background:rgba(59,130,246,0.08);  border-color:rgba(59,130,246,0.25);  } .ig-blue   .ig-label { color:#3b82f6; }
+.ig-green  { background:rgba(16,185,129,0.08);  border-color:rgba(16,185,129,0.2);   } .ig-green  .ig-label { color:#10b981; }
+.ig-amber  { background:rgba(245,158,11,0.08);  border-color:rgba(245,158,11,0.2);   } .ig-amber  .ig-label { color:#f59e0b; }
+.ig-purple { background:rgba(139,92,246,0.08);  border-color:rgba(139,92,246,0.2);   } .ig-purple .ig-label { color:#a78bfa; }
+.ig-red    { background:rgba(239,68,68,0.08);   border-color:rgba(239,68,68,0.2);    } .ig-red    .ig-label { color:#f87171; }
+
+/* ── Slide 2: Chart ── */
+.chart-top-bar { display:flex; align-items:center; justify-content:space-between; gap:1rem; flex-wrap:wrap; }
+.chart-toggles { display:flex; flex-wrap:wrap; gap:0.5rem; }
+.toggle-btn { font-family:inherit; font-size:0.78rem; font-weight:600; padding:0.3rem 0.8rem; border-radius:20px; cursor:pointer; border:1px solid var(--border-color); background:rgba(255,255,255,0.04); color:var(--text-secondary); transition:all 0.2s; }
+.toggle-btn.active[data-line="equity"]     { border-color:#3b82f6; color:#3b82f6; background:rgba(59,130,246,0.1); }
+.toggle-btn.active[data-line="realestate"] { border-color:#8b5cf6; color:#8b5cf6; background:rgba(139,92,246,0.1); }
+.toggle-btn.active[data-line="fd"]         { border-color:#f59e0b; color:#f59e0b; background:rgba(245,158,11,0.1); }
+.toggle-btn.active[data-line="cash"]       { border-color:#ef4444; color:#ef4444; background:rgba(239,68,68,0.1);  }
+
+/* Chart country picker */
+.chart-country-wrap { position:relative; }
+.chart-country-btn { display:flex; align-items:center; gap:6px; background:rgba(255,255,255,0.05); border:1px solid var(--border-color); border-radius:10px; padding:0.35rem 0.65rem; font-family:inherit; font-size:0.82rem; color:var(--text-primary); cursor:pointer; outline:none; white-space:nowrap; font-weight:600; }
+.chart-country-btn:hover { border-color:rgba(255,255,255,0.2); }
+.chart-country-menu { display:none; position:absolute; top:calc(100% + 6px); right:0; z-index:200; min-width:150px; list-style:none; margin:0; padding:4px; background:#1a1a1f; border:1px solid var(--border-color); border-radius:12px; box-shadow:0 8px 32px rgba(0,0,0,0.5); }
+.chart-country-menu--open { display:block; }
+.cco { padding:0.45rem 0.75rem; border-radius:8px; cursor:pointer; font-size:0.85rem; color:var(--text-primary); transition:background 0.15s; }
+.cco:hover { background:rgba(255,255,255,0.07); }
+.cco--active { background:rgba(16,185,129,0.12); color:var(--accent-green); }
+
+#growth-chart { border-radius:14px; background:rgba(255,255,255,0.02); border:1px solid var(--border-color); max-width:100%; display:block; }
+.chart-note { font-size:0.78rem; color:var(--text-secondary); margin:0; }
+
+/* Rate strip */
+.chart-rate-strip { display:flex; flex-wrap:wrap; gap:0.4rem 1.25rem; align-items:center; background:rgba(255,255,255,0.02); border:1px solid var(--border-color); border-radius:10px; padding:0.6rem 0.9rem; font-size:0.78rem; }
+.crs-item { display:flex; align-items:center; gap:0.4rem; }
+.crs-item span { color:var(--text-secondary); }
+.crs-item strong { font-variant-numeric:tabular-nums; }
+.crs-dot { width:10px; height:3px; border-radius:2px; display:inline-block; }
+.crs-sep { width:1px; height:14px; background:var(--border-color); flex-shrink:0; }
+
+/* ── Slide 3: Traps ── */
+.trap-grid { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+.trap-card { border-radius:16px; padding:1.1rem; display:flex; flex-direction:column; gap:0.75rem; border:1px solid; }
+.trap-fd  { background:rgba(245,158,11,0.04); border-color:rgba(245,158,11,0.2); }
+.trap-ins { background:rgba(239,68,68,0.04);  border-color:rgba(239,68,68,0.2);  }
+.trap-card-header { display:flex; align-items:center; gap:0.6rem; flex-wrap:wrap; }
+.trap-icon { font-size:1.25rem; }
+.trap-card-header h3 { margin:0; font-size:0.95rem; flex:1; }
+.trap-badge { font-size:0.65rem; font-weight:700; padding:0.15rem 0.5rem; border-radius:5px; text-transform:uppercase; letter-spacing:0.06em; white-space:nowrap; }
+.trap-badge-amber { background:rgba(245,158,11,0.15); color:#f59e0b; }
+.trap-badge-red   { background:rgba(239,68,68,0.15);  color:#f87171; }
+.trap-body { font-size:0.82rem; color:var(--text-secondary); line-height:1.6; margin:0; }
+.trap-body strong { color:var(--text-primary); }
+.trap-score-row { display:grid; grid-template-columns:1fr 1fr 1fr; gap:0.4rem; }
+.trap-score { display:flex; flex-direction:column; gap:0.15rem; border-radius:8px; padding:0.45rem 0.5rem; border:1px solid; }
+.trap-score span:first-child { font-size:0.62rem; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; color:var(--text-secondary); }
+.trap-score span:last-child  { font-size:0.78rem; font-weight:700; }
+.ts-bad { background:rgba(239,68,68,0.06); border-color:rgba(239,68,68,0.18); } .ts-bad span:last-child { color:#f87171; }
+.ulip-flow { display:flex; align-items:center; gap:0.3rem; flex-wrap:wrap; background:rgba(255,255,255,0.02); border:1px solid var(--border-color); border-radius:10px; padding:0.65rem 0.75rem; }
+.uf-box { flex:1; min-width:60px; text-align:center; padding:0.4rem 0.4rem; border-radius:7px; font-size:0.68rem; font-weight:600; }
+.uf-in    { background:rgba(16,185,129,0.12); color:#34d399;  border:1px solid rgba(16,185,129,0.3); }
+.uf-drain { background:rgba(239,68,68,0.1);   color:#fca5a5;  border:1px solid rgba(239,68,68,0.2);  }
+.uf-out   { background:rgba(239,68,68,0.15);  color:#ef4444;  border:1px solid rgba(239,68,68,0.3);  }
+.uf-arrow { color:var(--text-secondary); font-size:0.9rem; flex-shrink:0; }
+.trap-verdict { font-size:0.78rem; font-weight:600; padding:0.5rem 0.75rem; border-radius:8px; line-height:1.4; }
+.trap-verdict-amber { background:rgba(245,158,11,0.1); color:#fcd34d; }
+.trap-verdict-red   { background:rgba(239,68,68,0.1);  color:#fca5a5; }
+.rule-box { border-left:3px solid var(--accent-green); padding:0.65rem 0.9rem; background:rgba(16,185,129,0.05); border-radius:0 10px 10px 0; }
+.rule-label { font-size:0.65rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--accent-green); display:block; margin-bottom:0.3rem; }
+.rule-box p { margin:0; font-size:0.85rem; color:var(--text-secondary); }
+.rule-box strong { color:var(--text-primary); }
+
+/* ── Slide 4: Compare table ── */
+.compare-table { border-radius:12px; overflow:hidden; border:1px solid var(--border-color); }
+.ct-header, .ct-row { display:grid; grid-template-columns:1.2fr 1fr 1fr; border-bottom:1px solid var(--border-color); }
+.ct-row:last-child { border-bottom:none; }
+.ct-header { background:rgba(255,255,255,0.04); }
+.ct-col-label { padding:0.55rem 0.65rem; font-weight:700; font-size:0.82rem; text-align:center; }
+.ct-row-label { padding:0.55rem 0.65rem; font-size:0.78rem; color:var(--text-secondary); font-weight:600; display:flex; align-items:center; }
+.ct-cell { padding:0.55rem 0.65rem; font-size:0.78rem; display:flex; align-items:center; justify-content:center; text-align:center; }
+.ct-good    { color:#34d399; }
+.ct-bad     { color:#fca5a5; }
+.ct-neutral { color:#fcd34d; }
+
+/* ── Slide 5: Pyramid & actions ── */
+.pyramid-wrap { display:flex; flex-direction:column; align-items:center; gap:0.3rem; }
+.pyr-row { display:flex; justify-content:center; width:100%; }
+.pyr-block { display:flex; flex-direction:column; align-items:center; justify-content:center; padding:0.65rem 1rem; border-radius:10px; text-align:center; }
+.pyr-block span  { font-weight:700; font-size:0.9rem; }
+.pyr-block small { font-size:0.75rem; color:var(--text-secondary); margin-top:0.1rem; }
+.pyr-1 .pyr-block { width:38%; background:rgba(16,185,129,0.15);  border:1px solid rgba(16,185,129,0.3);  }
+.pyr-2 .pyr-block { width:62%; background:rgba(59,130,246,0.1);   border:1px solid rgba(59,130,246,0.25); }
+.pyr-3 .pyr-block { width:86%; background:rgba(245,158,11,0.08);  border:1px solid rgba(245,158,11,0.2);  }
+.action-steps { display:flex; flex-direction:column; gap:0.65rem; }
+.action-step { display:flex; align-items:flex-start; gap:0.65rem; }
+.step-num { flex-shrink:0; width:26px; height:26px; background:rgba(16,185,129,0.15); border:1px solid var(--accent-green); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:0.75rem; font-weight:700; color:var(--accent-green); }
+.action-step p { margin:0; font-size:0.875rem; color:var(--text-secondary); line-height:1.55; }
+.action-step strong { color:var(--text-primary); }
+.complete-banner { display:flex; align-items:center; gap:0.75rem; background:rgba(16,185,129,0.15); border:1px solid rgba(16,185,129,0.4); border-radius:14px; padding:1rem 1.25rem; color:var(--accent-green); font-weight:700; font-size:0.95rem; }
+
+/* ── Nav arrows & dots ── */
+.nav-arrow { position:fixed; top:50%; transform:translateY(-50%); width:44px; height:44px; border-radius:50%; background:rgba(255,255,255,0.06); border:1px solid var(--border-color); display:flex; align-items:center; justify-content:center; cursor:pointer; color:var(--text-primary); transition:all 0.2s; z-index:50; }
+.nav-arrow:hover { background:rgba(255,255,255,0.12); border-color:rgba(255,255,255,0.3); }
+.nav-arrow:disabled { opacity:0.25; pointer-events:none; }
+.prev { left:1rem; } .next { right:1rem; }
+.dots { position:fixed; bottom:1.75rem; left:50%; transform:translateX(-50%); display:flex; gap:0.5rem; z-index:50; }
+.dot { width:8px; height:8px; border-radius:50%; background:rgba(255,255,255,0.2); cursor:pointer; transition:all 0.2s; }
+.dot.active { background:var(--accent-green); transform:scale(1.25); }
+.dot:hover { background:rgba(255,255,255,0.5); }
+
+/* ── Responsive ── */
+@media (max-width:700px) {
+    .intro-grid { grid-template-columns:repeat(3,1fr); }
+    .trap-grid  { grid-template-columns:1fr; }
+    .chart-top-bar { flex-direction:column; align-items:flex-start; }
+    .nav-arrow { display:none; }
+    .slide { padding:1.5rem 0.75rem 5rem; }
+}
+@media (max-width:480px) {
+    .intro-grid { grid-template-columns:repeat(2,1fr); }
+    .ct-header, .ct-row { grid-template-columns:1fr 1fr 1fr; }
+}
+</style>
